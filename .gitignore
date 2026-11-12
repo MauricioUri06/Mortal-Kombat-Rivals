@@ -60,3 +60,8 @@ Temporary Items
 
 # GMRT build directory
 Build
+
+# Local build outputs and Python cache
+.build/
+.build-initial.log
+**/__pycache__/

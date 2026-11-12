@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"c_character_self_test",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"c_character_self_test",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

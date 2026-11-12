@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"c_fighter_hit",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"c_fighter_hit",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

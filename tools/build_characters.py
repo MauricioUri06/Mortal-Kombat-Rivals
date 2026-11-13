@@ -169,7 +169,7 @@ def obj(name, parent=None, spr=None, solid=False, visible=True):
         events.append(resource("GMEvent", "", "v1", collisionObjectId=None,
                                eventNum=int(number), eventType=event_types[event], isDnD=False))
     data = resource("GMObject", name, eventList=events, managed=True, overriddenProperties=[],
-                    parent=folder("Objects/characters" if "fighter" in name or name in ("o_subzero", "o_scorpion", "o_player_sc", "o_player_sz")
+                    parent=folder("Objects/characters" if "fighter" in name or name in ("o_subzero", "o_scorpion", "o_player_sc", "o_player_sz", "o_boss_sc", "o_boss_sz")
                                   else "Objects/combat" if name in ("o_att", "o_hitbox", "o_projectile", "o_iceball", "o_spear")
                                   else "Objects/level"),
                     parentObjectId=ref("objects", parent) if parent else None,
@@ -189,6 +189,8 @@ for args in [
     ("o_scorpion", "o_fighter", "s_scorpion_stand"),
     ("o_player_sc", "o_scorpion", "s_scorpion_stand"),
     ("o_player_sz", "o_subzero", "s_subzero_stand"),
+    ("o_boss_sc", "o_scorpion", "s_scorpion_stand"),
+    ("o_boss_sz", "o_subzero", "s_subzero_stand"),
     ("o_att",), ("o_hitbox", "o_att"), ("o_projectile", "o_att"),
     ("o_iceball", "o_projectile", "s_subzero_projectile"),
     ("o_spear", "o_projectile", "s_scorpion_projectile"),

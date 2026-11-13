@@ -7,10 +7,10 @@ right = false;
 spawn_right = false;
 key_left = ord("A");
 key_right = ord("D");
-key_jump = vk_space;
-key_punch = ord("Q");
-key_ranged = ord("W");
-key_slide = ord("E");
+key_jump = ord("W");
+button_punch = mb_left;
+button_ranged = mb_right;
+key_slide = vk_shift;
 sprites = {
     stand: s_scorpion_stand, run: s_scorpion_run,
     jump_start: s_scorpion_jump_start, jump: s_scorpion_jump,

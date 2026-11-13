@@ -44,10 +44,15 @@ function c_player_self_test() {
         c_player_select_input(false, true, false);
         c_test_assert(selected_character == 1 && selecting, "Selector navigates to Scorpion");
         c_player_select_input(false, false, true);
-        c_test_assert(!selecting && player.object_index == o_player_sc && instance_number(o_fighter) == 1,
-                      "Confirm spawns only the chosen Scorpion player");
-        c_test_assert(player.projectile_object == o_spear && instance_number(o_subzero) == 0,
-                      "Scorpion inherits spear without spawning Sub-Zero");
+        c_test_assert(!selecting && player.object_index == o_player_sc && instance_number(o_fighter) == 2,
+                      "Confirm spawns the chosen Scorpion player and one boss");
+        c_test_assert(player.projectile_object == o_spear && boss.object_index == o_boss_sz &&
+                      boss.projectile_object == o_iceball, "Unpicked Sub-Zero becomes the boss");
+        c_test_assert(boss.player_number == 2 && !boss.input_enabled && boss.target == player &&
+                      boss.hpMax == player.hpMax && boss.xSpeedMax == player.xSpeedMax &&
+                      boss.jumpPower == player.jumpPower, "Boss is an AI rival with the player's stats");
+        // Las pruebas de teclas usan al jugador solo.
+        with (boss) instance_destroy();
     } else if (player_test_frame == 18) {
         with (o_fighter) instance_destroy();
         selecting = true;
@@ -55,31 +60,39 @@ function c_player_self_test() {
         c_test_assert(selected_character == 0 && selecting, "Selector navigates to Sub-Zero");
         c_player_select_input(false, false, true);
         c_test_assert(player.object_index == o_player_sz && player.projectile_object == o_iceball &&
-                      instance_number(o_fighter) == 1 && instance_number(o_scorpion) == 0, "Sub-Zero inherits ice without spawning Scorpion");
+                      instance_number(o_fighter) == 2 && boss.object_index == o_boss_sc,
+                      "Sub-Zero player faces a Scorpion boss");
+        with (boss) instance_destroy();
     } else if (player_test_frame == 35) {
         player.hp = 1;
         with (player) c_fighter_projectile();
         c_player_start(selected_character);
         c_test_assert(player.hp == player.hpMax && player.object_index == o_player_sz &&
-                      instance_number(o_fighter) == 1, "Restart preserves only the chosen player and restores health");
+                      instance_number(o_fighter) == 2 && boss.object_index == o_boss_sc &&
+                      boss.hp == boss.hpMax, "Restart keeps the chosen player, respawns the boss and restores health");
         c_test_assert(instance_number(o_att) == 0, "Restart clears all previous attacks");
+        boss_test_frame = 0;
+        boss_test_done = false;
+        boss_seen = [false, false, false, false, false];
+        boss_hit_player = false;
         exit;
     }
 
     if (player_test_frame == 1 || player_test_frame == 18) {
-        c_test_assert(player.key_jump == vk_space && player.key_punch == ord("Q") &&
-                      player.key_ranged == ord("W") && player.key_slide == ord("E"),
+        c_test_assert(player.key_jump == ord("W") && player.key_jump_alt == vk_space && player.button_punch == mb_left &&
+                      player.button_ranged == mb_right && player.key_slide == vk_shift,
                       player.character_name + " shared key bindings");
         with (o_fighter) {
             test_key = -1;
             read_key = method(id, function(_key) { return _key == test_key; });
             read_key_pressed = read_key;
+            read_button_pressed = read_key;
             read_key_released = function(_key) { return false; };
         }
         exit;
     }
 
-    var _keys = [ord("D"), ord("A"), vk_right, vk_left, vk_space, ord("Q"), ord("W"), ord("E")];
+    var _keys = [ord("D"), ord("A"), vk_right, vk_left, ord("W"), mb_left, mb_right, vk_shift];
     var _states = ["run", "run", "run", "run", "jump_start", "punch", "ranged", "slide"];
     var _directions = [1, -1, 1, -1];
     var _tick = player_test_frame - (player_test_frame < 18 ? 2 : 19);
@@ -96,9 +109,36 @@ function c_player_self_test() {
     }
 }
 
+// El jefe pelea contra un jugador quieto e inmortal hasta usar todos sus movimientos.
+function c_boss_self_test() {
+    boss_test_frame++;
+    player.hp = player.hpMax;
+    var _moves = ["run", "jump_start", "punch", "ranged", "slide"];
+    var _all = true;
+    for (var _i = 0; _i < array_length(_moves); _i++) {
+        if (boss.state == _moves[_i]) boss_seen[_i] = true;
+        _all = _all && boss_seen[_i];
+    }
+    if (player.state == "hurt") boss_hit_player = true;
+    if (_all || boss_test_frame >= 3600) {
+        var _missing = "";
+        for (var _j = 0; _j < array_length(_moves); _j++) {
+            if (!boss_seen[_j]) _missing += " " + _moves[_j];
+        }
+        c_test_assert(_all, "Boss uses run, jump, punch, ranged and slide (missing:" + _missing + ")");
+        c_test_assert(boss_hit_player, "Boss lands hits on the player");
+        show_debug_message("Boss used every move in " + string(boss_test_frame) + " frames");
+        // Las pruebas de combate siguientes crean sus propios rivales.
+        with (boss) instance_destroy();
+        with (o_att) instance_destroy();
+        boss_test_done = true;
+    }
+}
+
 function c_character_self_test() {
     if (global.test_failed) exit;
     if (player_test_frame < 35) { c_player_self_test(); exit; }
+    if (!boss_test_done) { c_boss_self_test(); exit; }
     self_test_frame++;
     var _a = instance_find(o_subzero, 0);
     var _b = instance_find(o_scorpion, 0);
@@ -169,7 +209,7 @@ function c_character_self_test() {
             with (_b) c_fighter_state("ranged");
         break;
         case 265:
-            c_test_assert(_a.hp == 88 && _a.x > 580, "Scorpion spear damages and pulls rival");
+            c_test_assert(_a.hp == 80 && _a.x > 580, "Scorpion spear deals 20 damage and pulls rival");
             c_test_assert(instance_number(o_spear) == 0, "Spear consumed on impact");
             c_test_reset_fighters();
             _b.x = 680;
@@ -253,6 +293,25 @@ function c_character_self_test() {
             c_test_assert(instance_number(o_spear) == 0 && _b.state == "stand",
                           "Scorpion releases the pose when the chain hits a nearby wall");
             with (test_chain_wall) instance_destroy();
+            // Dos luchadores parados en el mismo sitio se separan solos.
+            c_test_reset_fighters();
+            _a.x = 640;
+            _b.x = 640;
+        break;
+        case 534:
+            c_test_assert(!place_meeting(_a.x, _a.y, _b) && _a.state == "stand" && _b.state == "stand",
+                          "Idle fighters never stay on top of each other");
+            // En movimiento si se atraviesan.
+            c_test_reset_fighters();
+            _a.x = 560;
+            _b.x = 640;
+            _a.input_enabled = false;
+            _a.ai_move = 1;
+        break;
+        case 564:
+            c_test_assert(_a.x > _b.x, "Moving fighter passes through an idle one");
+            _a.ai_move = 0;
+            _a.input_enabled = true;
             show_debug_message("CHARACTER_SELF_TEST_OK: " + string(global.test_passes) + " checks");
             game_end();
         break;

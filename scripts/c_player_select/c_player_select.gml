@@ -1,11 +1,14 @@
-/// Selector inicial: solo crea el personaje elegido.
+/// Selector inicial: crea el personaje elegido y, enfrente, al otro como jefe.
 /// Se ejecuta en el contexto de o_control.
 function c_player_start(_choice) {
     with (o_att) instance_destroy();
     with (o_fighter) instance_destroy();
     selected_character = clamp(_choice, 0, 1);
     var _player_object = selected_character == 0 ? o_player_sz : o_player_sc;
+    var _boss_object = selected_character == 0 ? o_boss_sc : o_boss_sz;
     player = instance_create_layer(380, 592, "Instances", _player_object);
+    boss = instance_create_layer(room_width - 380, 592, "Instances", _boss_object);
+    boss.target = player;
     selecting = false;
 }
 

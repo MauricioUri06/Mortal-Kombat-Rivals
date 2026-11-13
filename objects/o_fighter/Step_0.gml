@@ -50,7 +50,7 @@ if (state == "land" && anim_done) c_fighter_state("stand");
 if (!_locked) {
     var _input = input_enabled ?
         (read_key(key_right) || (key_right_alt >= 0 && read_key(key_right_alt))) -
-        (read_key(key_left) || (key_left_alt >= 0 && read_key(key_left_alt))) : 0;
+        (read_key(key_left) || (key_left_alt >= 0 && read_key(key_left_alt))) : ai_move;
     if (_input != 0) {
         right = _input > 0;
         if (sign(xSpeed) != _input) xSpeed = 0;
@@ -60,16 +60,16 @@ if (!_locked) {
     }
     if (ground) {
         // Una pulsacion inicia cada ataque; mantener la tecla no lo repite.
-        if (input_enabled && read_key_pressed(key_jump)) {
+        if ((input_enabled && (read_key_pressed(key_jump) || read_key_pressed(key_jump_alt))) || ai_jump) {
             xSpeed = 0;
             c_fighter_state("jump_start");
-        } else if (input_enabled && read_key_pressed(key_punch)) {
+        } else if ((input_enabled && read_button_pressed(button_punch)) || ai_punch) {
             xSpeed = 0;
             c_fighter_state("punch");
-        } else if (input_enabled && read_key_pressed(key_ranged) && special_cooldown == 0) {
+        } else if (((input_enabled && read_button_pressed(button_ranged)) || ai_ranged) && special_cooldown == 0) {
             xSpeed = 0;
             c_fighter_state("ranged");
-        } else if (input_enabled && read_key_pressed(key_slide) && slide_cooldown == 0) {
+        } else if (((input_enabled && read_key_pressed(key_slide)) || ai_slide) && slide_cooldown == 0) {
             xSpeed = 0;
             c_fighter_state("slide");
             slide_cooldown = 60;
@@ -133,7 +133,7 @@ switch (state) {
 
 if (state != "slide") mask_index = s_fighter_mask;
 
-if (input_enabled && read_key_released(key_jump) && ySpeed < -4) ySpeed = -4;
+if (input_enabled && (read_key_released(key_jump) || read_key_released(key_jump_alt)) && ySpeed < -4) ySpeed = -4;
 var _was_ground = ground;
 ySpeed = min(fallMax, ySpeed + grav);
 c_fighter_move();
@@ -141,6 +141,16 @@ if (!_was_ground && ground && (state == "fall" || state == "jump")) {
     c_fighter_state("land");
 } else if (!ground && state != "punch" && state != "ranged" && state != "slide" && state != "jump_start") {
     c_fighter_state(ySpeed < 0 ? "jump" : "fall");
+}
+
+// Se pueden atravesar en movimiento, pero parados nunca quedan uno encima del otro.
+if (xSpeed == 0) {
+    var _other = instance_place(x, y, o_fighter);
+    if (_other != noone) {
+        var _push = x < _other.x ? -2 : 2;
+        if (x == _other.x) _push = player_number == 1 ? -2 : 2;
+        if (!place_meeting(x + _push, y, o_solid)) x = clamp(x + _push, 24, room_width - 24);
+    }
 }
 
 image_xscale = right ? visual_scale : -visual_scale;

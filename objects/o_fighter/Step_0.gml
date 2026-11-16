@@ -44,13 +44,14 @@ if (state == "hurt") {
     exit;
 }
 
-var _locked = state == "punch" || state == "ranged" || state == "slide" || state == "jump_start";
+var _locked = state == "punch" || state == "kick" || state == "ranged" || state == "slide" || state == "jump_start";
 if (state == "land" && anim_done) c_fighter_state("stand");
 
 if (!_locked) {
     var _input = input_enabled ?
         (read_key(key_right) || (key_right_alt >= 0 && read_key(key_right_alt))) -
         (read_key(key_left) || (key_left_alt >= 0 && read_key(key_left_alt))) : ai_move;
+    var _crouch = input_enabled ? (read_key(key_crouch) || read_key(key_crouch_alt)) : ai_crouch;
     if (_input != 0) {
         right = _input > 0;
         if (sign(xSpeed) != _input) xSpeed = 0;
@@ -66,13 +67,20 @@ if (!_locked) {
         } else if ((input_enabled && read_button_pressed(button_punch)) || ai_punch) {
             xSpeed = 0;
             c_fighter_state("punch");
-        } else if (((input_enabled && read_button_pressed(button_ranged)) || ai_ranged) && special_cooldown == 0) {
+        } else if ((input_enabled && read_button_pressed(button_kick)) || ai_kick) {
+            xSpeed = 0;
+            c_fighter_state("kick");
+        } else if (((input_enabled && read_key_pressed(key_ranged)) || ai_ranged) && special_cooldown == 0) {
             xSpeed = 0;
             c_fighter_state("ranged");
         } else if (((input_enabled && read_key_pressed(key_slide)) || ai_slide) && slide_cooldown == 0) {
             xSpeed = 0;
             c_fighter_state("slide");
             slide_cooldown = 60;
+        } else if (_crouch) {
+            // Agachado no se desplaza, pero puede girarse.
+            xSpeed = 0;
+            if (state != "land" || anim_done) c_fighter_state("crouch");
         } else if (state != "land") {
             c_fighter_state(xSpeed == 0 ? "stand" : "run");
         }
@@ -92,6 +100,15 @@ switch (state) {
         xSpeed = 0;
         if (!action_fired && anim_frame >= 4) {
             c_fighter_attack("punch");
+            action_fired = true;
+        }
+        if (anim_done) c_fighter_state("stand");
+    break;
+    case "kick":
+        // Mas lenta que el punetazo: el golpe sale con la pierna extendida.
+        xSpeed = 0;
+        if (!action_fired && anim_frame >= 4) {
+            c_fighter_attack("kick");
             action_fired = true;
         }
         if (anim_done) c_fighter_state("stand");
@@ -131,7 +148,8 @@ switch (state) {
     break;
 }
 
-if (state != "slide") mask_index = s_fighter_mask;
+if (state == "crouch") mask_index = s_fighter_mask_crouch;
+else if (state != "slide") mask_index = s_fighter_mask;
 
 if (input_enabled && (read_key_released(key_jump) || read_key_released(key_jump_alt)) && ySpeed < -4) ySpeed = -4;
 var _was_ground = ground;
@@ -139,7 +157,7 @@ ySpeed = min(fallMax, ySpeed + grav);
 c_fighter_move();
 if (!_was_ground && ground && (state == "fall" || state == "jump")) {
     c_fighter_state("land");
-} else if (!ground && state != "punch" && state != "ranged" && state != "slide" && state != "jump_start") {
+} else if (!ground && state != "punch" && state != "kick" && state != "ranged" && state != "slide" && state != "jump_start") {
     c_fighter_state(ySpeed < 0 ? "jump" : "fall");
 }
 

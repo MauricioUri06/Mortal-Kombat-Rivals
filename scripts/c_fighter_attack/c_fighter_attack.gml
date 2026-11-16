@@ -6,22 +6,32 @@ function c_fighter_attack(_kind) {
     _hit.team = player_number;
     _hit.facing = _dir;
     _hit.kind = _kind;
-    _hit.dmg = (_kind == "slide") ? 16 : 10;
-    _hit.life = (_kind == "slide") ? 12 : 5;
-    _hit.offset_x = (_kind == "slide") ? 38 : 36;
-    _hit.offset_y = (_kind == "slide") ? -17 : -53;
-    _hit.half_width = (_kind == "slide") ? 25 : 21;
-    _hit.half_height = (_kind == "slide") ? 16 : 15;
+    switch (_kind) {
+        case "slide":
+            _hit.dmg = 16; _hit.life = 12;
+            _hit.offset_x = 38; _hit.offset_y = -17; _hit.half_width = 25; _hit.half_height = 16;
+        break;
+        case "kick":
+            // Mas dano y alcance que el punetazo, pero mas lenta; patada alta: pasa por encima del agachado.
+            _hit.dmg = 14; _hit.life = 6;
+            _hit.offset_x = 46; _hit.offset_y = -64; _hit.half_width = 20; _hit.half_height = 9;
+        break;
+        default:
+            _hit.dmg = 10; _hit.life = 5;
+            _hit.offset_x = 36; _hit.offset_y = -53; _hit.half_width = 21; _hit.half_height = 15;
+        break;
+    }
 }
 
 function c_fighter_projectile() {
     var _dir = right ? 1 : -1;
-    var _shot = instance_create_layer(x + 46 * _dir, y - 53, "att", projectile_object);
+    var _shot = instance_create_layer(x + 46 * _dir, y, "att", projectile_object);
+    _shot.y = y - _shot.height;
     _shot.owner = id;
     _shot.team = player_number;
     _shot.facing = _dir;
-    _shot.image_xscale = visual_scale * _dir;
-    _shot.image_yscale = visual_scale;
+    _shot.image_xscale = _shot.scale * _dir;
+    _shot.image_yscale = _shot.scale;
     active_projectile = _shot;
     special_cooldown = 72;
 }

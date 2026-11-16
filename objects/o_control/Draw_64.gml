@@ -28,8 +28,8 @@ if (selecting) {
     draw_set_colour(c_white);
     draw_text(640, 578, "A / D o flechas: elegir   |   Enter o Espacio: jugar");
     draw_set_colour(make_colour_rgb(173, 190, 210));
-    draw_text(640, 614, "Mover: A / D o flechas   |   Saltar: W o Espacio");
-    draw_text(640, 642, "Clic izquierdo: golpe   |   Clic derecho: ataque a distancia   |   Shift: deslizamiento");
+    draw_text(640, 614, "Mover: A / D o flechas   |   Saltar: W o Espacio   |   Agacharse: S   |   Shift: deslizamiento");
+    draw_text(640, 642, "Clic izq: golpe   |   Clic der: patada   |   Q: ataque a distancia");
     draw_set_halign(fa_left);
     draw_set_colour(c_white);
     exit;
@@ -55,7 +55,7 @@ for (var _i = 0; _i < instance_number(o_fighter); _i++) {
 }
 
 draw_set_colour(make_colour_rgb(183, 199, 215));
-draw_text(42, 637, "Mover: A/D o flechas  |  Saltar: W o Espacio  |  Clic izq: golpe  |  Clic der: distancia  |  Shift: deslizar");
+draw_text(42, 637, "A/D mover  |  W/Espacio saltar  |  S agacharse  |  Shift deslizar  |  Clic izq golpe  |  Clic der patada  |  Q distancia");
 draw_set_colour(make_colour_rgb(118, 143, 166));
 draw_text(42, 691, "R reiniciar  /  Esc elegir personaje  /  F1 ver colisiones");
 

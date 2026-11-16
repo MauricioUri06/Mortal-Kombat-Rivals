@@ -16,5 +16,16 @@ for (var _i = 0; _i < instance_number(o_fighter); _i++) {
         if (c_fighter_hit(_target, dmg, owner, kind, facing)) array_push(hit_targets, _target);
     }
 }
+// Los enemigos reciben los golpes del equipo contrario, como o_enemy_body con o_att.
+for (var _k = 0; _k < instance_number(o_enemy); _k++) {
+    var _enemy = instance_find(o_enemy, _k);
+    if (_enemy.team == team || array_contains(hit_targets, _enemy)) continue;
+    if (_enemy.bbox_right >= x - half_width && _enemy.bbox_left <= x + half_width
+    && _enemy.bbox_bottom >= y - half_height && _enemy.bbox_top <= y + half_height) {
+        _enemy.hp -= dmg;
+        _enemy.hit_flash = 8;
+        array_push(hit_targets, _enemy);
+    }
+}
 life--;
 if (life <= 0) instance_destroy();

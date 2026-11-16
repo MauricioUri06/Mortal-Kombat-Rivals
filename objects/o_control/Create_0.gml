@@ -11,6 +11,8 @@ selecting = true;
 selected_character = 0;
 player = noone;
 boss = noone;
+baraka = noone;
+goro = noone;
 global.test_passes = 0;
 global.test_failed = false;
 display_set_gui_size(1280, 720);

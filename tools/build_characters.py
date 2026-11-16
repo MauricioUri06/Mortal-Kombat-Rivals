@@ -120,6 +120,10 @@ rows = [
     {"top": 1026, "bottom": 1171, "baseline": 1165, "anchor": 65, "pitch": 142},
     {"top": 1171, "bottom": 1321, "baseline": 1307, "anchor": 65, "pitch": 141},
     {"top": 1321, "bottom": 1402, "baseline": 1358, "anchor": 68, "pitch": 142},
+    # Kick and crouch sheets, already normalized to 176x176 cells by prepare_move_sheets.py.
+    {"top": 0, "bottom": 176, "baseline": 168, "anchor": 80, "pitch": 176},
+    {"top": 176, "bottom": 352, "baseline": 344, "anchor": 80, "pitch": 176},
+    {"top": 352, "bottom": 528, "baseline": 520, "anchor": 80, "pitch": 176},
 ]
 animations = {
     "stand": (0, list(range(8)), 8),
@@ -134,9 +138,13 @@ animations = {
     "hurt": (7, list(range(8)), 20),
     "death": (8, list(range(8)), 12),
     "projectile": (9, list(range(8)), 16),
+    "kick": (10, list(range(8)), 14),
+    "crouch": (11, list(range(1, 8)), 28),
 }
 atlases = {"subzero": next((ROOT / "sprite_ref").glob("*Sub-Zero*.png")),
-           "scorpion": next((ROOT / "sprite_ref").glob("*Scorpion*.png"))}
+           "scorpion": next((ROOT / "sprite_ref").glob("*Scorpion dorado*.png"))}
+move_atlases = {"subzero": ROOT / "sprite_ref" / "Sub-Zero patada y agacharse.png",
+                "scorpion": ROOT / "sprite_ref" / "Scorpion patada y agacharse.png"}
 for character, atlas in atlases.items():
     for animation, (row, columns, fps) in animations.items():
         projectile = animation == "projectile"
@@ -144,13 +152,23 @@ for character, atlas in atlases.items():
                        f"Sprites/{character}", width=144 if projectile else 176,
                        height=64 if projectile else 176,
                        origin=(72, 32) if projectile else (80, 168),
-                       bbox=(24, 14, 126, 50) if projectile else None)
-        entry.update(source=str(atlas.relative_to(ROOT)), row=rows[row], columns=columns)
+                       bbox=(24, 20, 126, 44) if projectile else None)
+        source = move_atlases[character] if animation in ("kick", "crouch") else atlas
+        entry.update(source=str(source.relative_to(ROOT)), row=rows[row], columns=columns)
+        imports.append(entry)
+
+# Enemies: sheets normalized to 176x176 cells by prepare_move_sheets.py (rows 10-12 above).
+for enemy, animations_of_enemy in (("baraka", ("idle", "jump")), ("goro", ("walk", "tackle", "dazed"))):
+    for index, animation in enumerate(animations_of_enemy):
+        entry = sprite(f"s_{enemy}_{animation}", 8, 10, f"Sprites/{enemy}")
+        entry.update(source=str((ROOT / "sprite_ref" / f"{enemy.capitalize()}.png").relative_to(ROOT)),
+                     row=rows[10 + index], columns=list(range(8)))
         imports.append(entry)
 
 for name, width, height, origin, bounds in [
         ("s_fighter_mask", 176, 176, (80, 168), (61, 43, 98, 167)),
         ("s_fighter_mask_slide", 176, 176, (80, 168), (52, 117, 108, 167)),
+        ("s_fighter_mask_crouch", 176, 176, (80, 168), (61, 85, 98, 167)),
         ("s_solid", 32, 32, (0, 0), (0, 0, 31, 31))]:
     entry = sprite(name, 1, 0, "Sprites/system", width, height, origin, bounds)
     entry.update(primitive="rectangle", bounds=list(bounds))
@@ -169,7 +187,7 @@ def obj(name, parent=None, spr=None, solid=False, visible=True):
         events.append(resource("GMEvent", "", "v1", collisionObjectId=None,
                                eventNum=int(number), eventType=event_types[event], isDnD=False))
     data = resource("GMObject", name, eventList=events, managed=True, overriddenProperties=[],
-                    parent=folder("Objects/characters" if "fighter" in name or name in ("o_subzero", "o_scorpion", "o_player_sc", "o_player_sz", "o_boss_sc", "o_boss_sz")
+                    parent=folder("Objects/characters" if "fighter" in name or name in ("o_subzero", "o_scorpion", "o_player_sc", "o_player_sz", "o_boss_sc", "o_boss_sz", "o_enemy", "o_baraka", "o_goro")
                                   else "Objects/combat" if name in ("o_att", "o_hitbox", "o_projectile", "o_iceball", "o_spear")
                                   else "Objects/level"),
                     parentObjectId=ref("objects", parent) if parent else None,
@@ -191,6 +209,7 @@ for args in [
     ("o_player_sz", "o_subzero", "s_subzero_stand"),
     ("o_boss_sc", "o_scorpion", "s_scorpion_stand"),
     ("o_boss_sz", "o_subzero", "s_subzero_stand"),
+    ("o_enemy",), ("o_baraka", "o_enemy", "s_baraka_idle"), ("o_goro", "o_enemy", "s_goro_walk"),
     ("o_att",), ("o_hitbox", "o_att"), ("o_projectile", "o_att"),
     ("o_iceball", "o_projectile", "s_subzero_projectile"),
     ("o_spear", "o_projectile", "s_scorpion_projectile"),
@@ -242,7 +261,7 @@ project_path = PROJECT / "MortalKombatRivals.yyp"
 project = read(project_path)
 resources.append({"id": ref("rooms", "Room1")})
 project.update(defaultScriptType=1, resources=resources)
-names = ["Sprites", "Sprites/subzero", "Sprites/scorpion", "Sprites/system", "Objects",
+names = ["Sprites", "Sprites/subzero", "Sprites/scorpion", "Sprites/baraka", "Sprites/goro", "Sprites/system", "Objects",
          "Objects/characters", "Objects/combat", "Objects/level", "Scripts"]
 project["Folders"] = [resource("GMFolder", name.split("/")[-1], folderPath=f"folders/{name}.yy")
                       for name in names]

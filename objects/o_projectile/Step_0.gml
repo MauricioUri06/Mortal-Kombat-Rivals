@@ -4,7 +4,7 @@ if (life <= 0 || x < -100 || x > room_width + 100) { instance_destroy(); exit; }
 // Barrido por pasos de un pixel para respetar paredes y objetivos a alta velocidad.
 for (var _step = 0; _step < spd; _step++) {
     if (max_range >= 0 && (travel_distance >= max_range ||
-        point_distance(owner.x + facing * 30, owner.y - 53, x + facing, y) > max_range)) {
+        point_distance(owner.x + facing * anchor_x, owner.y + anchor_y, x + facing, y) > max_range)) {
         instance_destroy();
         exit;
     }
@@ -17,6 +17,15 @@ for (var _step = 0; _step < spd; _step++) {
         if (place_meeting(x, y, _target)) {
             c_fighter_hit(_target, dmg, owner, kind, facing);
             // Tambien se consume contra un rival temporalmente invulnerable.
+            instance_destroy();
+            exit;
+        }
+    }
+    var _enemy = instance_place(x, y, o_enemy);
+    if (_enemy != noone) {
+        if (_enemy.team != team) {
+            _enemy.hp -= dmg;
+            _enemy.hit_flash = 8;
             instance_destroy();
             exit;
         }

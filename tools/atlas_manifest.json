@@ -457,6 +457,80 @@
     ]
   },
   {
+    "name": "s_subzero_kick",
+    "frames": [
+      "7cfcbcc0-8cac-4bc9-811a-13f6168d01f1",
+      "f62bbecc-5666-4515-92d3-a4abac4f9ab7",
+      "c72b490c-b70b-494e-b541-bb8545a668ce",
+      "e53641d5-4bb1-4ff0-aaa1-c4b83108ece8",
+      "88338d73-87bb-47a0-abdb-26a83a76c187",
+      "5c44d264-286a-42ab-91d3-693c6af1bde9",
+      "c12cbf18-4e19-42d9-a72f-5401e0698c3e",
+      "e5205f40-446f-4f46-9a3b-e6d5f93ed106"
+    ],
+    "layer": "70993b01-a83c-4367-aa11-1480f029a3d2",
+    "width": 176,
+    "height": 176,
+    "origin": [
+      80,
+      168
+    ],
+    "source": "sprite_ref\\Sub-Zero patada y agacharse.png",
+    "row": {
+      "top": 0,
+      "bottom": 176,
+      "baseline": 168,
+      "anchor": 80,
+      "pitch": 176
+    },
+    "columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  {
+    "name": "s_subzero_crouch",
+    "frames": [
+      "ba7815e4-c307-44ab-9a13-a914e66d575f",
+      "2f5f8773-d9f2-4695-b819-bcfe86066614",
+      "9e9a8d57-d54b-4405-8b9f-c3bf7e179c45",
+      "eff8d0ce-3361-4fba-bf23-7f8e3c6f7ef1",
+      "1e7b6318-6739-46ce-b0c8-85cda0511c52",
+      "87055450-87e3-4bd5-846f-d6655cebf3d9",
+      "e2a7d94e-ab92-45ae-96dd-9ef19e9d821d"
+    ],
+    "layer": "16f4d6f5-d6a4-4433-8ed9-9a9eaa8017cd",
+    "width": 176,
+    "height": 176,
+    "origin": [
+      80,
+      168
+    ],
+    "source": "sprite_ref\\Sub-Zero patada y agacharse.png",
+    "row": {
+      "top": 176,
+      "bottom": 352,
+      "baseline": 344,
+      "anchor": 80,
+      "pitch": 176
+    },
+    "columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  {
     "name": "s_scorpion_stand",
     "frames": [
       "51633d43-05ee-4670-a8af-9dd6577ce4b9",
@@ -914,6 +988,270 @@
     ]
   },
   {
+    "name": "s_scorpion_kick",
+    "frames": [
+      "087435dd-f3c7-4cc9-9b67-89534a054500",
+      "2ba0dbc5-3dba-4939-8652-3d4bcef1b084",
+      "25db580b-e261-4b95-ae72-9f335ba19241",
+      "5a6f6611-80d3-4884-994c-d1061948503e",
+      "f51cf50b-cab4-4694-b489-c96f1f794c4d",
+      "6ef9309d-f707-470c-98d1-d6058ade22ba",
+      "24ae7e1e-282e-4f04-91a4-9b8ee23f965a",
+      "fdee6d20-fb6a-4fe1-8e53-c6148499a1ed"
+    ],
+    "layer": "9f335073-0012-4775-98e4-62c6b88f0042",
+    "width": 176,
+    "height": 176,
+    "origin": [
+      80,
+      168
+    ],
+    "source": "sprite_ref\\Scorpion patada y agacharse.png",
+    "row": {
+      "top": 0,
+      "bottom": 176,
+      "baseline": 168,
+      "anchor": 80,
+      "pitch": 176
+    },
+    "columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  {
+    "name": "s_scorpion_crouch",
+    "frames": [
+      "712d8f08-bf00-4dcd-9005-bb564a952095",
+      "9a08ce7a-448f-493f-8997-4cff8d41e68b",
+      "b805b178-10a3-435b-a71c-b229f2c77cf1",
+      "3e8ee1b8-aa5d-454b-b300-4fe7be7efa26",
+      "8ac14b9d-3ad6-4e28-9673-1787d3e48572",
+      "817f9def-7211-40d1-a6f2-fbf196163e3f",
+      "b253ad87-7b77-4ba2-9618-d597a1fcd94e"
+    ],
+    "layer": "4dca847e-7ab8-4c6b-898d-67b0e084696b",
+    "width": 176,
+    "height": 176,
+    "origin": [
+      80,
+      168
+    ],
+    "source": "sprite_ref\\Scorpion patada y agacharse.png",
+    "row": {
+      "top": 176,
+      "bottom": 352,
+      "baseline": 344,
+      "anchor": 80,
+      "pitch": 176
+    },
+    "columns": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  {
+    "name": "s_baraka_idle",
+    "frames": [
+      "a2c89f2a-df94-4151-b4ff-ae768e699de6",
+      "69d3321a-0ab3-4c51-af8f-cd86eedda33e",
+      "ee95160e-7b6e-4b43-a242-e0e38fab0f3b",
+      "53cc8b13-dd0e-4b82-9680-b5fc4b837643",
+      "261ad0bf-4fe7-4a28-a26b-a12cba4a1da9",
+      "6a00bc79-c5a9-4023-a32c-e350a23a4ed9",
+      "a8045104-7af4-4a22-ba39-49ca0006312f",
+      "e1436103-bbbe-45d1-8503-a1d632a9e7ea"
+    ],
+    "layer": "cb90a565-52c9-4acd-baf5-98f1eca65f4b",
+    "width": 176,
+    "height": 176,
+    "origin": [
+      80,
+      168
+    ],
+    "source": "sprite_ref\\Baraka.png",
+    "row": {
+      "top": 0,
+      "bottom": 176,
+      "baseline": 168,
+      "anchor": 80,
+      "pitch": 176
+    },
+    "columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  {
+    "name": "s_baraka_jump",
+    "frames": [
+      "998ead37-2392-4b79-86ff-14e0176d7e04",
+      "b5713afb-c70e-4c2f-a93a-c56769ad4d4e",
+      "53f03709-6353-4b54-9537-faf8085f54fd",
+      "d2608e9f-e2b6-4b80-a0f6-544ef60dbbdb",
+      "2bb86eee-aea8-4cce-a6c6-d02bdca53469",
+      "ca085fe4-24a1-4d50-8b49-158e19095227",
+      "5b49e33f-3568-4e62-8532-a58b34b5198e",
+      "a633fbb9-12d3-4935-8064-aa7587ca5f11"
+    ],
+    "layer": "2daffc96-24b4-43be-b295-dd0268bec6ff",
+    "width": 176,
+    "height": 176,
+    "origin": [
+      80,
+      168
+    ],
+    "source": "sprite_ref\\Baraka.png",
+    "row": {
+      "top": 176,
+      "bottom": 352,
+      "baseline": 344,
+      "anchor": 80,
+      "pitch": 176
+    },
+    "columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  {
+    "name": "s_goro_walk",
+    "frames": [
+      "f05acff2-5d90-4230-83eb-612daed93108",
+      "40297a96-4c3b-4bc3-9f27-d9763c47721b",
+      "50ccdef5-cfe5-4bd4-a030-4904f393a732",
+      "34aa1c1d-83d6-429b-af1a-1cd6cff4117d",
+      "9167329d-9250-443c-b0d4-e6e93dee621f",
+      "50d59e7e-e78e-4ef0-93b3-f758dacb3f2e",
+      "12ff078d-88b2-4182-9231-9ecc450646c4",
+      "856d3b77-7297-49ed-8cf9-9e422d27f747"
+    ],
+    "layer": "1eb8342f-88a9-462b-9fff-ab6d5b3f703a",
+    "width": 176,
+    "height": 176,
+    "origin": [
+      80,
+      168
+    ],
+    "source": "sprite_ref\\Goro.png",
+    "row": {
+      "top": 0,
+      "bottom": 176,
+      "baseline": 168,
+      "anchor": 80,
+      "pitch": 176
+    },
+    "columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  {
+    "name": "s_goro_tackle",
+    "frames": [
+      "2249343b-9791-4a87-8ad8-c96af6256e26",
+      "79d21115-bd5d-47cb-9331-0aaa19fc3161",
+      "41748cf6-f3c1-4171-98b2-a134c275519c",
+      "c40fa3bd-d8ae-487b-9440-88039f5c7dbd",
+      "76b2ac0a-ca3f-413b-8d99-b08a7d77971c",
+      "a37418f9-b80c-4c3e-8e80-92c8545c522d",
+      "7c78acac-c521-4009-8bb7-1d1d65df38b8",
+      "e16d3d27-f006-4a50-abec-a769df1434ee"
+    ],
+    "layer": "75df7831-e309-4e29-9c08-1698894b2a98",
+    "width": 176,
+    "height": 176,
+    "origin": [
+      80,
+      168
+    ],
+    "source": "sprite_ref\\Goro.png",
+    "row": {
+      "top": 176,
+      "bottom": 352,
+      "baseline": 344,
+      "anchor": 80,
+      "pitch": 176
+    },
+    "columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  {
+    "name": "s_goro_dazed",
+    "frames": [
+      "2ddd204a-6ec6-49fd-b7d1-debf175c47fd",
+      "9c261a04-b170-4d6b-846f-dd19238c63ab",
+      "157b153c-6483-49aa-ad5a-4b0469ea9c7e",
+      "461bc322-00ec-4717-8125-398887ae5fab",
+      "48353a1c-21dc-4069-a6e5-671df5a5b23f",
+      "3778cd13-3fa0-4b80-b370-1079948199ea",
+      "47ebb4a5-5c1f-4a11-9acb-aa489eb17137",
+      "54b601bd-d1e1-4af3-a9c9-3fcc4f0e9229"
+    ],
+    "layer": "cc08861a-87ef-450d-a6e0-25b35db36ef7",
+    "width": 176,
+    "height": 176,
+    "origin": [
+      80,
+      168
+    ],
+    "source": "sprite_ref\\Goro.png",
+    "row": {
+      "top": 352,
+      "bottom": 528,
+      "baseline": 520,
+      "anchor": 80,
+      "pitch": 176
+    },
+    "columns": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  {
     "name": "s_fighter_mask",
     "frames": [
       "2109079d-6d02-45c7-a8e5-d3fa3d9d3fcf"
@@ -950,6 +1288,26 @@
       52,
       117,
       108,
+      167
+    ]
+  },
+  {
+    "name": "s_fighter_mask_crouch",
+    "frames": [
+      "da7deb0c-eee0-4082-8362-197f9d1937af"
+    ],
+    "layer": "4c59ac48-ad98-41d5-bb07-7d2c54d3b768",
+    "width": 176,
+    "height": 176,
+    "origin": [
+      80,
+      168
+    ],
+    "primitive": "rectangle",
+    "bounds": [
+      61,
+      85,
+      98,
       167
     ]
   },

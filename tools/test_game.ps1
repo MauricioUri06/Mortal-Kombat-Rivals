@@ -30,9 +30,9 @@ $process = Start-Process -FilePath $runner -ArgumentList @('-game', "`"$buildDir
     -WorkingDirectory $workspace -WindowStyle Hidden -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
 if (!$process.WaitForExit(90000)) { $process.Kill(); throw 'Integration tests timed out.' }
 $output = Get-Content -LiteralPath $stdout -Raw
-if ($output -notmatch 'CHARACTER_SELF_TEST_OK: 66 checks' -or $output -match 'FAIL:|ERROR!!!|FATAL ERROR') {
+if ($output -notmatch 'CHARACTER_SELF_TEST_OK: 95 checks' -or $output -match 'FAIL:|ERROR!!!|FATAL ERROR') {
     Write-Output $output
     Get-Content -LiteralPath $stderr
     throw 'Character integration tests failed.'
 }
-Write-Output 'GameMaker VM compilation passed. All 66 player, selector, boss AI, chain pose, range and gameplay integration checks passed.'
+Write-Output 'GameMaker VM compilation passed. All 95 player, selector, boss AI, chain pose, range and gameplay integration checks passed.'

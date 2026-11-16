@@ -1,7 +1,24 @@
-"""Validate native resource references and sprite frame files (standard library only)."""
+"""Validate native resource references and sprite frame files (standard library only).
+
+With Pillow installed, a frame and its editor layer are compared by pixels, because GameMaker
+re-encodes the PNGs when it saves the project; without Pillow they must match byte for byte.
+"""
 import json
 import re
 import struct
+
+try:
+    from PIL import Image
+except ImportError:
+    Image = None
+
+
+def same_pixels(a, b):
+    first, second = a.read_bytes(), b.read_bytes()
+    if first == second or Image is None:
+        return first == second
+    with Image.open(a) as x, Image.open(b) as y:
+        return x.size == y.size and x.convert("RGBA").tobytes() == y.convert("RGBA").tobytes()
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
@@ -56,7 +73,7 @@ for entry in project["resources"]:
                 layer_path = resource_path.parent / "layers" / frame["name"] / (layer["name"] + ".png")
                 check(layer_path.is_file(), f"Missing editor layer: {layer_path}")
                 if path.is_file() and layer_path.is_file():
-                    check(path.read_bytes() == layer_path.read_bytes(), f"Editor/compiled pixels differ: {path}")
+                    check(same_pixels(path, layer_path), f"Editor/compiled pixels differ: {path}")
     elif data["resourceType"] == "GMObject":
         event_type = {0: "Create", 1: "Destroy", 2: "Alarm", 3: "Step", 7: "Other", 8: "Draw", 12: "CleanUp"}
         for event in data["eventList"]:

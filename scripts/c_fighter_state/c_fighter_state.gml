@@ -15,6 +15,8 @@ function c_fighter_state(_next) {
         case "fall": anim_sprite = sprites.fall; anim_fps = 16; break;
         case "land": anim_sprite = sprites.land; anim_fps = 16; break;
         case "punch": anim_sprite = sprites.punch; anim_fps = 20; break;
+        case "kick": anim_sprite = sprites.kick; anim_fps = 14; break;
+        case "crouch": anim_sprite = sprites.crouch; anim_fps = 28; break;
         case "ranged": anim_sprite = sprites.ranged; anim_fps = 18; break;
         case "slide": anim_sprite = sprites.slide; anim_fps = 18; break;
         case "hurt": anim_sprite = sprites.hurt; anim_fps = 20; break;

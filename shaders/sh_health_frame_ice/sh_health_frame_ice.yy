@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"sh_health_frame_ice",
+  "name":"sh_health_frame_ice",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

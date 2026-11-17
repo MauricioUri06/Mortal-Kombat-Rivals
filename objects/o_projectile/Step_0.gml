@@ -15,7 +15,7 @@ for (var _step = 0; _step < spd; _step++) {
         var _target = instance_find(o_fighter, _i);
         if (_target.player_number == team || _target.dead) continue;
         if (place_meeting(x, y, _target)) {
-            c_fighter_hit(_target, dmg, owner, kind, facing);
+            if (c_fighter_hit(_target, dmg, owner, kind, facing) && kind == "spear") c_sfx_cadena();
             // Tambien se consume contra un rival invulnerable
             instance_destroy();
             exit;
@@ -27,6 +27,7 @@ for (var _step = 0; _step < spd; _step++) {
             _enemy.hp -= dmg;
             _enemy.hit_flash = 8;
             c_sfx(kind == "ice" ? snd_freeze : snd_hit, 0.9);
+            if (kind == "spear") c_sfx_cadena();
             instance_destroy();
             exit;
         }

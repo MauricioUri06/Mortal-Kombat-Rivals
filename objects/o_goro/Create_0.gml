@@ -14,7 +14,7 @@ ySpeed = 0;
 grav = 0.5;
 fallMax = 13; // velocidad maxima de caida por la gravedad
 
-state = "walk"; // estados posibles: walk, tackle y dazed
+state = "walk"; // estados posibles: walk, angry, tackle y dazed
 anim = 0;
 hit_flash = 0;
 visual_scale = 0.65;

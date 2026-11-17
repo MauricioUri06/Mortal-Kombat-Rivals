@@ -118,7 +118,7 @@ function c_plataforma_bajo_pies(_dy) {
 function c_plataforma_ajustar() {
     var _p = c_plataforma_bajo_pies(1);
     if (_p == noone) exit;
-    var _sube = bbox_bottom - (_p.bbox_top - 1);
+    var _sube = bbox_bottom - _p.bbox_top; // pies justo en el borde, igual que en o_solid
     if (_sube > 0 && _sube <= PLATAFORMA_TOL + 1 && !place_meeting(x, y - _sube, o_solid)) y -= _sube;
 }
 

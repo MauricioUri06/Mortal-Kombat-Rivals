@@ -52,6 +52,5 @@ function c_fighter_state(_next) {
         case "land": c_sfx(snd_land, 0.6); break;
         case "wall": c_sfx(snd_wall_grab, 0.7); break;
         case "dash": c_sfx(snd_dash, 0.8); break;
-        case "hook": c_sfx_cadena(); break;
     }
 }

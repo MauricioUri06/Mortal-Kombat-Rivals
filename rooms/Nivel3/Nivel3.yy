@@ -117,7 +117,6 @@
     {"name":"inst_15F52C9","path":"rooms/Nivel3/Nivel3.yy",},
     {"name":"inst_6CC22A2F","path":"rooms/Nivel3/Nivel3.yy",},
     {"name":"inst_248C3E02","path":"rooms/Nivel3/Nivel3.yy",},
-    {"name":"inst_6185E7AF","path":"rooms/Nivel3/Nivel3.yy",},
     {"name":"inst_4EF62B16","path":"rooms/Nivel3/Nivel3.yy",},
     {"name":"inst_7989A5F0","path":"rooms/Nivel3/Nivel3.yy",},
   ],
@@ -125,7 +124,6 @@
   "layers":[
     {"$GMRInstanceLayer":"","%Name":"att","depth":0,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[],"layers":[],"name":"att","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Instances","depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
-        {"$GMRInstance":"v4","%Name":"inst_6185E7AF","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_6185E7AF","objectId":{"name":"o_checkpoint","path":"objects/o_checkpoint/o_checkpoint.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":64.0,"y":608.0,},
         {"$GMRInstance":"v4","%Name":"inst_4EF62B16","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4EF62B16","objectId":{"name":"o_spawn_boss","path":"objects/o_spawn_boss/o_spawn_boss.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":992.0,"y":608.0,},
         {"$GMRInstance":"v4","%Name":"inst_E404D6FB","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_E404D6FB","objectId":{"name":"o_control","path":"objects/o_control/o_control.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":0.0,"y":0.0,},
         {"$GMRInstance":"v4","%Name":"inst_7989A5F0","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7989A5F0","objectId":{"name":"o_spawn_player","path":"objects/o_spawn_player/o_spawn_player.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":160.0,"y":608.0,},

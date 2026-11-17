@@ -35,7 +35,7 @@ if (!_en_rango && state != "tackle") {
 }
 if (hspeed == 0 && pausa_hspeed != 0) { hspeed = pausa_hspeed; pausa_hspeed = 0; }
 
-if (state == "tackle") anim += 1 / 4; else anim += 1 / 6;
+if (state == "tackle") anim += 1 / 4; else if (state == "angry") anim += 1 / 8; else anim += 1 / 6;
 
 // Revisa si delante hay pared o borde
 
@@ -56,14 +56,24 @@ switch (state) {
 					image_xscale = abs(image_xscale) * _to; // se da la vuelta hacia el jugador
 					_dir = _to;
 				}
-				state = "tackle";
+				// Primero se enoja quieto: da tiempo a reaccionar
+				state = "angry";
 				anim = 0;
 				c_sfx(snd_goro_roar, 0.9);
-				hspeed = tackleSpeed * _dir;
+				hspeed = 0;
 			}
 		}
 		// Si no ve al jugador, da la vuelta
 		if (state == "walk" && _blocked) c_flip();
+	break;
+
+	case "angry":
+		// Al terminar el enojo embiste hacia donde mira
+		if (anim >= 6) {
+			state = "tackle";
+			anim = 0;
+			hspeed = tackleSpeed * _dir;
+		}
 	break;
 
 	case "tackle":

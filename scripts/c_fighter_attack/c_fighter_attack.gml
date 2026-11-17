@@ -34,5 +34,6 @@ function c_fighter_projectile() {
     _shot.image_yscale = _shot.scale;
     active_projectile = _shot;
     special_cooldown = 72;
-    if (projectile_object == o_spear) c_sfx_cadena(); else c_sfx(snd_iceball, 0.8);
+    // La cadena de Scorpion solo suena al acertar (en o_projectile)
+    if (projectile_object != o_spear) c_sfx(snd_iceball, 0.8);
 }

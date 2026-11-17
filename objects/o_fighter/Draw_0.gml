@@ -1,3 +1,9 @@
+// Fatality: la escena incluye al ganador y al perdedor
+if (cine == "fatality") {
+    draw_sprite_ext(sprites.fatality, floor(cine_frame), x, y,
+                    right ? visual_scale : -visual_scale, visual_scale, 0, c_white, 1);
+    exit;
+}
 // Cadena del gancho desde la mano hasta la argolla
 if (state == "hook" && instance_exists(hook_target)) {
     var _ax = x + (right ? 1 : -1) * 52; // posicion de la mano extendida del sprite

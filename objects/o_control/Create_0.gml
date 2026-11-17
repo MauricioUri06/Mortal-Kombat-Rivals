@@ -47,3 +47,6 @@ goro = noone;
 display_set_gui_size(1280, 720);
 gpu_set_texfilter(false);
 window_set_caption("Mortal Kombat Rivals - Sub-Zero y Scorpion");
+// Secuencia del fatality al terminar el duelo
+fatality_fase = 0;
+fatality_timer = 0;

@@ -9,6 +9,8 @@ sprites = {
     fall: s_subzero_fall, land: s_subzero_land,
     punch: s_subzero_punch, ranged: s_subzero_ranged,
     slide: s_subzero_slide, kick: s_subzero_kick, crouch: s_subzero_crouch, hurt: s_subzero_hurt, death: s_subzero_death,
+    defeat: s_subzero_defeat, fatality: s_subzero_fatality,
     wall: s_animacion_wallJump_sz
 };
+fatality_distance = 87; // distancia del rival para que encaje la escena del fatality
 c_fighter_state("stand");

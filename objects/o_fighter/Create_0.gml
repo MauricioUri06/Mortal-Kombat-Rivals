@@ -99,3 +99,9 @@ dash_timer = 0;
 dash_cd = 0;
 dash_dir = 1;
 dash_air_used = false; // solo se permite un dash por salto
+// Remate al ganar el duelo, lo controla o_control
+cine = ""; // walk camina solo, ready espera, fatality dibuja la escena
+cine_x = 0;
+cine_timer = 0;
+cine_frame = 0;
+fatality_distance = 87;

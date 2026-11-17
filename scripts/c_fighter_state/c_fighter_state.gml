@@ -41,6 +41,7 @@ function c_fighter_state(_next) {
             anim_frame = variable_struct_exists(sprites, "hook") ? 0 : min(4, sprite_get_number(anim_sprite) - 1);
         break;
         case "death": anim_sprite = sprites.death; anim_fps = 12; break;
+        case "defeat": anim_sprite = sprites.defeat; anim_fps = 8; break;
     }
     sprite_index = anim_sprite;
     image_index = floor(anim_frame);

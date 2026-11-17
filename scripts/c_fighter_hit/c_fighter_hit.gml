@@ -31,7 +31,11 @@ function c_fighter_hit(_target, _damage, _owner, _kind, _direction) {
             frozen_timer = 0;
             hitstun = 0;
             xSpeed = 0;
-            c_fighter_state("death");
+            // En el duelo agacha la cabeza y espera el fatality
+            var _me = id;
+            var _rival = false;
+            with (o_fighter) if (id != _me && !dead) _rival = true;
+            c_fighter_state(_rival && _kind != "fall" ? "defeat" : "death");
         } else {
             c_fighter_state("hurt");
         }

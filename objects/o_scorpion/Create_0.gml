@@ -19,6 +19,8 @@ sprites = {
     fall: s_scorpion_fall, land: s_scorpion_land,
     punch: s_scorpion_punch, ranged: s_scorpion_ranged,
     slide: s_scorpion_slide, kick: s_scorpion_kick, crouch: s_scorpion_crouch, hurt: s_scorpion_hurt, death: s_scorpion_death,
+    defeat: s_scorpion_defeat, fatality: s_scorpion_fatality,
     wall: s_animacion_wallJump_sc, hook: s_animacion_gancho
 };
+fatality_distance = 88; // distancia del rival para que encaje la escena del fatality
 c_fighter_state("stand");

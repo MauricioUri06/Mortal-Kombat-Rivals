@@ -72,7 +72,7 @@ if (keyboard_check_pressed(vk_escape)) {
 }
 
 // Al morir, el nivel empieza desde el comienzo
-if (instance_exists(player) && player.dead) {
+if (instance_exists(player) && player.dead && !instance_exists(boss)) { // en el duelo decide el fatality
     death_timer++;
     if (death_timer >= 2 * game_get_speed(gamespeed_fps)) {
         global.selected_character = selected_character;

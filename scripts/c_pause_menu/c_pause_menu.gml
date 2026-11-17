@@ -15,7 +15,8 @@ function c_match_menu_open(_menu) {
 function c_match_menu_find_hover() {
     var _mx = device_mouse_x_to_gui(0);
     var _my = device_mouse_y_to_gui(0);
-    var _buttons = match_menu_buttons;
+    // La pantalla de victoria trae su propia area de boton
+    var _buttons = variable_struct_exists(match_menu, "buttons") ? match_menu.buttons : match_menu_buttons;
     for (var _i = 0; _i < array_length(match_menu.options); _i++) {
         var _top = match_menu.top + _i * _buttons.spacing;
         if (point_in_rectangle(_mx, _my, _buttons.left, _top, _buttons.right, _top + _buttons.height)) {
@@ -72,6 +73,22 @@ function c_match_menu_draw() {
     var _menu = match_menu;
     var _gui_width = display_get_gui_width();
     var _gui_height = display_get_gui_height();
+
+    // Pantalla de victoria a pantalla completa con botones del menu principal
+    if (variable_struct_exists(_menu, "screen")) {
+        draw_sprite_stretched(_menu.screen, 0, 0, 0, _gui_width, _gui_height);
+        // Boton JUGAR DE NUEVO: late suave y crece con el mouse encima
+        var _over = match_menu_hover == 0;
+        var _s = _over ? 1.08 : 1 + 0.02 * sin(current_time / 150);
+        draw_sprite_ext(_menu.button, 0, _gui_width div 2, _menu.top + _menu.buttons.height div 2,
+                        _s, _s, 0, _over ? c_white : make_colour_rgb(225, 225, 225), 1);
+        if (match_menu_action != MatchMenuAction.none) {
+            instance_activate_all();
+            match_menu = undefined;
+            match_menu_frozen = false;
+        }
+        exit;
+    }
     if (surface_exists(match_menu_frame)) draw_surface_stretched(match_menu_frame, 0, 0, _gui_width, _gui_height);
     draw_set_alpha(0.64);
     draw_set_colour(c_black);

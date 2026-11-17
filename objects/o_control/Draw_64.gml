@@ -77,7 +77,7 @@ draw_set_halign(fa_left);
 draw_set_colour(make_colour_rgb(183, 199, 215));
 draw_set_colour(make_colour_rgb(118, 143, 166));
 
-if (instance_exists(player)) {
+if (instance_exists(player) && !instance_exists(boss)) { // en el duelo el resultado lo muestra el fatality
     if (player.dead) {
         draw_set_halign(fa_center);
         draw_set_colour(c_white);
@@ -88,10 +88,8 @@ if (instance_exists(player)) {
 }
 draw_set_colour(c_white);
 
-if (instance_exists(boss) && boss.dead) {
-    draw_set_halign(fa_center);
-    draw_set_colour(c_white);
-    draw_text(640, 160, "VICTORIA");
-    draw_text(640, 187, "R para reiniciar  /  Esc para pausar");
-    draw_set_halign(fa_left);
+// FATALITY en el centro con su goteo de sangre
+if (fatality_fase == 4) {
+    var _ff = min(floor(fatality_timer / game_get_speed(gamespeed_fps) * 6), sprite_get_number(s_fatality_text) - 1);
+    draw_sprite_ext(s_fatality_text, _ff, 640, 260, 0.7, 0.7, 0, c_white, 1);
 }

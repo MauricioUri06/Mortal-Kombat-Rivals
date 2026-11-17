@@ -31,6 +31,27 @@ if (anim_loop) {
 }
 image_index = floor(anim_frame);
 
+// Ganador del duelo: camina solo a su sitio y espera el fatality
+if (cine != "") {
+    xSpeed = 0;
+    if (cine == "walk") {
+        cine_timer++;
+        var _falta = cine_x - x;
+        if (abs(_falta) <= 3 || cine_timer > 4 * _fps) {
+            x = cine_x; // si algo lo traba, llega igual
+            cine = "ready";
+            c_fighter_state("stand");
+        } else {
+            right = _falta > 0;
+            xSpeed = sign(_falta) * min(3, abs(_falta));
+            c_fighter_state("run");
+        }
+    }
+    ySpeed = min(fallMax, ySpeed + grav);
+    c_fighter_move();
+    exit;
+}
+
 if (dead) {
     xSpeed = 0;
     ySpeed = min(fallMax, ySpeed + grav);

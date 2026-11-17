@@ -8,6 +8,8 @@ En el centro de la arena aparece además **Baraka**, un enemigo con el comportam
 
 Cerca del borde derecho aparece **Goro**, que patrulla el suelo como `o_enemy_walker` de la referencia: da la vuelta (`c_flip`) al llegar a una pared, al final del mapa o a un borde del que caería. Si ve al jugador en su misma línea horizontal, delante de él y sin una pared en medio, lo embiste a toda velocidad. La embestida sigue hasta golpear al jugador (20 de daño) o chocar con algo; después queda confundido 2 segundos y vuelve a patrullar. Caminando o confundido no hace daño. Tiene 60 de vida.
 
+En **Nivel 1** también aparece Kitana como enemiga: lanza su abanico cuando el jugador está a su altura y a menos de 560 píxeles; tiene 40 de vida y el abanico hace 10 de daño.
+
 | Acción | Ambos personajes |
 | --- | --- |
 | Moverse | A / D o ← / → |

@@ -1,11 +1,7 @@
-/// Selector inicial: crea el personaje elegido, enfrente al otro como jefe, y a los enemigos Baraka y Goro.
-/// Se ejecuta en el contexto de o_control.
+/// Selector inicial: crea al jugador en la room actual y conecta los enemigos colocados en ella.
 function c_player_clear() {
     with (o_att) instance_destroy();
     with (o_fighter) instance_destroy();
-<<<<<<< HEAD
-=======
-    with (o_enemy) instance_destroy();
     player = noone;
     boss = noone;
     baraka = noone;
@@ -14,8 +10,8 @@ function c_player_clear() {
 
 function c_player_start(_choice) {
     c_player_clear();
->>>>>>> 77b046383f115992c94541c1567bd5accbf0d9f0
     selected_character = clamp(_choice, 0, 1);
+
     global.selected_character = selected_character;
     var _player_object = selected_character == 0 ? o_player_sz : o_player_sc;
 

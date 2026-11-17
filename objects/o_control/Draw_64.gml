@@ -28,14 +28,11 @@ if (main_menu_open) {
     draw_set_colour(make_colour_rgb(179, 191, 206));
     draw_text(640, 515, "Enter para jugar");
 
-<<<<<<< HEAD
     draw_set_colour(c_white);
     draw_text(640, 578, "A / D o flechas: elegir   |   Enter o Espacio: jugar");
     draw_set_colour(make_colour_rgb(173, 190, 210));
     draw_text(640, 614, "Mover: A / D o flechas   |   Saltar: W o Espacio   |   Agacharse: S   |   Shift: deslizamiento");
     draw_text(640, 642, "Clic izq: golpe   |   Clic der: patada   |   Q: ataque a distancia   |   Alt: gancho / puente");
-=======
->>>>>>> 77b046383f115992c94541c1567bd5accbf0d9f0
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_colour(c_white);
@@ -103,28 +100,20 @@ draw_set_halign(fa_left);
 draw_set_colour(make_colour_rgb(183, 199, 215));
 draw_text(42, 637, "A/D mover  |  W/Espacio saltar  |  S agacharse  |  Shift deslizar  |  Clic izq golpe  |  Clic der patada  |  Q distancia  |  Alt habilidad");
 draw_set_colour(make_colour_rgb(118, 143, 166));
-<<<<<<< HEAD
-draw_text(42, 691, "R reiniciar  /  Esc elegir personaje  /  F1 ver colisiones");
-
-if (instance_exists(player)) {
-    if (player.dead) {
-        draw_set_halign(fa_center);
-        draw_set_colour(c_white);
-        draw_text(640, 160, "DERROTA");
-        draw_text(640, 187, global.checkpoint_activo ? "Reapareciendo en el checkpoint..." : "Reapareciendo...");
-        draw_set_halign(fa_left);
-    }
-}
-if (instance_exists(boss)) {
-    if (boss.dead) {
-        draw_set_halign(fa_center);
-        draw_set_colour(c_white);
-        draw_text(640, 160, "VICTORIA");
-        draw_text(640, 187, "R para reiniciar  /  Esc para elegir personaje");
-        draw_set_halign(fa_left);
-    }
-}
-=======
 draw_text(42, 691, "R reiniciar  /  Esc pausa  /  F1 ver colisiones");
->>>>>>> 77b046383f115992c94541c1567bd5accbf0d9f0
+
+if (instance_exists(player) && player.dead) {
+    draw_set_halign(fa_center);
+    draw_set_colour(c_white);
+    draw_text(640, 160, "DERROTA");
+    draw_text(640, 187, global.checkpoint_activo ? "Reapareciendo en el checkpoint..." : "Reapareciendo...");
+    draw_set_halign(fa_left);
+}
+if (instance_exists(boss) && boss.dead) {
+    draw_set_halign(fa_center);
+    draw_set_colour(c_white);
+    draw_text(640, 160, "VICTORIA");
+    draw_text(640, 187, "R para reiniciar  /  Esc para pausar");
+    draw_set_halign(fa_left);
+}
 draw_set_colour(c_white);

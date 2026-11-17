@@ -7,14 +7,19 @@ match_menu_action = MatchMenuAction.none;
 
 switch (_action) {
     case MatchMenuAction.restart:
-        c_player_start(selected_character);
+        global.selected_character = selected_character;
+        room_restart();
         break;
     case MatchMenuAction.select_fighter:
-    case MatchMenuAction.main_menu:
         c_player_clear();
         selected_character = 0;
         selecting = true;
-        main_menu_open = _action == MatchMenuAction.main_menu;
+        main_menu_open = false;
         global.debug_hitboxes = false;
+        break;
+    case MatchMenuAction.main_menu:
+        global.selected_character = -1;
+        global.checkpoint_activo = false;
+        room_restart();
         break;
 }

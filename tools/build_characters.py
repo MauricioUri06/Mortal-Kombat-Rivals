@@ -260,9 +260,15 @@ write(room_path, room)
 project_path = PROJECT / "MortalKombatRivals.yyp"
 project = read(project_path)
 resources.append({"id": ref("rooms", "Room1")})
+# Menu and HUD artwork are maintained separately from the character atlases.
+resources.append({"id": ref("sprites", "s_health_frame")})
+resources.append({"id": ref("sprites", "s_menu_background")})
+resources.append({"id": ref("sprites", "s_menu_logo")})
+resources.append({"id": ref("sprites", "s_pause_panel")})
+resources.append({"id": ref("shaders", "sh_health_frame_ice")})
 project.update(defaultScriptType=1, resources=resources)
 names = ["Sprites", "Sprites/subzero", "Sprites/scorpion", "Sprites/baraka", "Sprites/goro", "Sprites/system", "Objects",
-         "Objects/characters", "Objects/combat", "Objects/level", "Scripts"]
+         "Objects/characters", "Objects/combat", "Objects/level", "Scripts", "Shaders"]
 project["Folders"] = [resource("GMFolder", name.split("/")[-1], folderPath=f"folders/{name}.yy")
                       for name in names]
 write(project_path, project)

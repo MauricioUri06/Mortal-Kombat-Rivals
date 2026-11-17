@@ -1,2 +1,2 @@
-// Decide la siguiente accion (como el jefe de la referencia).
+// La IA decide la siguiente accion
 c_boss_decide();

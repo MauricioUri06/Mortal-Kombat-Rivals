@@ -1,5 +1,5 @@
 if (instance_exists(owner)) {
-    // Recta desde los eslabones de la mano hasta la cola de la lanza.
+    // Linea desde la mano hasta la cola de la lanza
     var _ax = owner.x + facing * anchor_x;
     var _ay = owner.y + anchor_y;
     var _tail = x - facing * 40 * scale;

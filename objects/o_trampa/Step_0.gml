@@ -5,7 +5,7 @@ if (_p.dead) exit;
 if (place_meeting(x, y, _p)) {
     var _dir = sign(_p.x - (bbox_left + bbox_right) / 2);
     if (_dir == 0) _dir = 1;
-    // c_fighter_hit respeta la invulnerabilidad: no dana cada frame.
+    // c_fighter_hit respeta la invulnerabilidad del jugador
     if (c_fighter_hit(_p, dmg, id, "trampa", _dir)) {
         _p.ySpeed = -empuje;
         _p.ground = false;

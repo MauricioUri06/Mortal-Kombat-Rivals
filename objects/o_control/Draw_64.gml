@@ -5,34 +5,11 @@ if (main_menu_open) {
     draw_sprite(s_menu_logo, 0, 640 - sprite_get_width(s_menu_logo) div 2, 159);
 
     draw_set_valign(fa_middle);
-    var _play = menu_play;
-    draw_set_colour(c_black);
-    draw_rectangle(_play.left - 2, _play.top + 5, _play.right + 2, _play.bottom - 1, false);
-    draw_rectangle(_play.left + 5, _play.top - 2, _play.right - 5, _play.bottom + 5, false);
-    var _rim = menu_play_hovered ? make_colour_rgb(245, 198, 119) : make_colour_rgb(189, 135, 74);
-    var _gold_dark = make_colour_rgb(105, 65, 37);
-    draw_set_colour(_gold_dark);
-    draw_rectangle(_play.left, _play.top + 6, _play.right, _play.bottom - 6, false);
-    draw_rectangle_colour(_play.left + 6, _play.top, _play.right - 6, _play.bottom,
-        _rim, _rim, _gold_dark, _gold_dark, false);
-    var _steel = menu_play_hovered ? make_colour_rgb(69, 54, 41) : make_colour_rgb(37, 35, 36);
-    var _iron = make_colour_rgb(13, 13, 17);
-    draw_rectangle_colour(_play.left + 3, _play.top + 3, _play.right - 3, _play.bottom - 3,
-        _steel, _steel, _iron, _iron, false);
-    draw_set_colour(_rim);
-    var _middle = (_play.top + _play.bottom) div 2;
-    draw_rectangle(_play.left + 13, _middle - 1, _play.left + 26, _middle + 1, false);
-    draw_rectangle(_play.right - 26, _middle - 1, _play.right - 13, _middle + 1, false);
-    draw_set_colour(make_colour_rgb(245, 236, 215));
-    draw_text_transformed(640, _middle, "JUGAR", 1.5, 1.5, 0);
+    c_menu_boton(menu_play, "JUGAR", menu_opcion == 0);
+    c_menu_boton(menu_salir, "SALIR", menu_opcion == 1);
     draw_set_colour(make_colour_rgb(179, 191, 206));
-    draw_text(640, 515, "Enter para jugar");
+    draw_text(640, 600, "Flechas: elegir   |   Enter: aceptar");
 
-    draw_set_colour(c_white);
-    draw_text(640, 578, "A / D o flechas: elegir   |   Enter o Espacio: jugar");
-    draw_set_colour(make_colour_rgb(173, 190, 210));
-    draw_text(640, 614, "Mover: A / D o flechas   |   Saltar: W o Espacio   |   Agacharse: S   |   Shift: deslizamiento");
-    draw_text(640, 642, "Clic izq: golpe   |   Clic der: patada   |   Q: ataque a distancia   |   Alt: gancho / puente");
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_colour(c_white);
@@ -68,7 +45,7 @@ for (var _i = 0; _i < instance_number(o_fighter); _i++) {
     draw_set_colour(_colour);
     draw_text_transformed(_label_x, 42, _fighter.character_name, 1.35, 1.35, 0);
 
-    // Fondo y vida quedan detrás del marco metálico del PNG.
+    // Fondo y vida quedan detras del marco metalico
     draw_set_colour(make_colour_rgb(20, 16, 22));
     draw_rectangle(_left + 9, 76, _right - 9, 91, false);
 
@@ -98,17 +75,19 @@ for (var _i = 0; _i < instance_number(o_fighter); _i++) {
 draw_set_halign(fa_left);
 
 draw_set_colour(make_colour_rgb(183, 199, 215));
-draw_text(42, 637, "A/D mover  |  W/Espacio saltar  |  S agacharse  |  Shift deslizar  |  Clic izq golpe  |  Clic der patada  |  Q distancia  |  Alt habilidad");
 draw_set_colour(make_colour_rgb(118, 143, 166));
-draw_text(42, 691, "R reiniciar  /  Esc pausa  /  F1 ver colisiones");
 
-if (instance_exists(player) && player.dead) {
-    draw_set_halign(fa_center);
-    draw_set_colour(c_white);
-    draw_text(640, 160, "DERROTA");
-    draw_text(640, 187, global.checkpoint_activo ? "Reapareciendo en el checkpoint..." : "Reapareciendo...");
-    draw_set_halign(fa_left);
+if (instance_exists(player)) {
+    if (player.dead) {
+        draw_set_halign(fa_center);
+        draw_set_colour(c_white);
+        draw_text(640, 160, "DERROTA");
+        draw_text(640, 187, "Volviendo al comienzo del nivel...");
+        draw_set_halign(fa_left);
+    }
 }
+draw_set_colour(c_white);
+
 if (instance_exists(boss) && boss.dead) {
     draw_set_halign(fa_center);
     draw_set_colour(c_white);
@@ -116,4 +95,3 @@ if (instance_exists(boss) && boss.dead) {
     draw_text(640, 187, "R para reiniciar  /  Esc para pausar");
     draw_set_halign(fa_left);
 }
-draw_set_colour(c_white);

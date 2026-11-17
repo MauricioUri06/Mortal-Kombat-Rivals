@@ -1,5 +1,5 @@
 draw_self();
-// Brilla cuando Scorpion lo tiene a su alcance (tecla E).
+// Brilla cuando Scorpion lo tiene a su alcance
 var _me = id;
 var _en_rango = false;
 with (o_player_sc) {

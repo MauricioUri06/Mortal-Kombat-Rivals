@@ -1,6 +1,6 @@
 var _paso = 1 / (duracion * game_get_speed(gamespeed_fps));
 if (estado == "oscurecer") {
-    // El jugador se queda quieto mientras se oscurece.
+    // El jugador se queda quieto mientras se oscurece
     if (instance_exists(o_control)) {
         var _p = o_control.player;
         if (instance_exists(_p)) { _p.input_enabled = false; _p.xSpeed = 0; }

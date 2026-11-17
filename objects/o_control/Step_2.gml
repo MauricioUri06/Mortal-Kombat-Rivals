@@ -1,4 +1,5 @@
-if (global.test_mode || main_menu_open || selecting || match_menu_frozen) exit;
+if (main_menu_open || selecting || match_menu_frozen) exit;
+if (saliendo || instance_exists(o_fade)) exit; // ya eligio una opcion y se esta yendo
 if (!instance_exists(player) || !instance_exists(boss)) exit;
 
 var _player_dead = player.dead;
@@ -18,6 +19,7 @@ if (_player_dead && !_boss_dead) {
     _accent = make_colour_rgb(245, 195, 116);
 }
 
+if (_boss_dead && !_player_dead) c_sfx(snd_victory, 1, 0); else c_sfx(snd_defeat, 1, 0);
 c_match_menu_open({
     title: _title,
     subtitle: _subtitle,

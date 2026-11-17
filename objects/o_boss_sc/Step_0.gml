@@ -1,3 +1,3 @@
-// Primero la IA pulsa sus botones; despues el luchador los procesa.
+// Primero la IA pulsa botones, luego se procesan
 c_boss_step();
 event_inherited();

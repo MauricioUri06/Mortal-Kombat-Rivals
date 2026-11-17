@@ -1,4 +1,4 @@
-// Igual que en la referencia: da la vuelta a un enemigo que camina con hspeed.
+// Da la vuelta a un enemigo que camina
 function c_flip()
 {
 	hspeed *= -1;

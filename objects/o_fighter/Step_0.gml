@@ -1,13 +1,15 @@
-// Como en la referencia: entradas, movimiento, comprobaciones y ataques.
+// Entradas, movimiento, comprobaciones y ataques del luchador
 var _fps = game_get_speed(gamespeed_fps);
 invi = max(0, invi - 1);
 special_cooldown = max(0, special_cooldown - 1);
 slide_cooldown = max(0, slide_cooldown - 1);
-ground = place_meeting(x, y + 1, o_solid) || c_puente_bajo_pies(1);
+ground = place_meeting(x, y + 1, o_solid) || (ySpeed >= 0 && c_puente_bajo_pies(1));
 if (ground) air_jumps = air_jumps_max;
-if (state == "wall" || state == "hook") fall_timer = 0; // agarrado o con el gancho no cuenta como caida // en el suelo se recupera el doble salto
+dash_cd = max(0, dash_cd - 1);
+if (ground) dash_air_used = false;
+if (state == "wall" || state == "hook" || state == "dash") fall_timer = 0; // agarrado, con gancho o dash no cuenta caida
 
-// La congelacion conserva el cuadro de recibir dano y no admite entradas.
+// Congelado conserva el cuadro de dano, sin control
 if (frozen_timer > 0 && !dead) {
     frozen_timer--;
     xSpeed = 0;
@@ -46,18 +48,57 @@ if (state == "hurt") {
     exit;
 }
 
-// Gancho de Scorpion: se jala en linea recta hacia la argolla, sin gravedad.
+// Dash: impulso horizontal sin gravedad con espejismos
+if (state == "dash") {
+    dash_timer--;
+    xSpeed = dash_dir * dash_speed;
+    ySpeed = 0;
+    if (dash_timer mod 2 == 0) {
+        var _e = instance_create_depth(x, y, depth + 1, o_espejismo);
+        _e.spr = anim_sprite;
+        _e.frame = floor(anim_frame);
+        _e.xs = right ? visual_scale : -visual_scale;
+        _e.ys = visual_scale;
+        _e.col = (projectile_object == o_iceball) ? make_colour_rgb(80, 175, 255) : make_colour_rgb(255, 205, 50);
+    }
+    c_fighter_move();
+    if (dash_timer <= 0 || xSpeed == 0) {
+        // Al terminar conserva un poco de impulso
+        xSpeed = dash_dir * xSpeedMax;
+        wall_lock = 4;
+        c_fighter_state(ground ? "stand" : "fall");
+    }
+    image_xscale = right ? visual_scale : -visual_scale;
+    exit;
+}
+
+// Empezar un dash con E si esta desbloqueado
+if (input_enabled && dash_cd == 0 && variable_global_exists("dash_desbloqueado") && global.dash_desbloqueado
+&& read_key_pressed(key_dash) && (ground || !dash_air_used)
+&& (state == "stand" || state == "run" || state == "crouch" || state == "jump" || state == "fall"
+    || state == "land" || state == "wall" || state == "wall_jump")) {
+    dash_dir = right ? 1 : -1; // en la pared ya mira hacia afuera
+    if (!ground) dash_air_used = true;
+    dash_timer = dash_frames;
+    dash_cd = dash_cooldown;
+    ySpeed = 0;
+    c_fighter_state("dash");
+    image_xscale = right ? visual_scale : -visual_scale;
+    exit;
+}
+
+// Gancho: se jala en linea recta, sin gravedad
 if (state == "hook") {
     hook_timer++;
     if (!instance_exists(hook_target)) { c_fighter_state("fall"); exit; }
     var _gx = c_gancho_centro_x(hook_target);
-    var _gy = c_gancho_centro_y(hook_target) + HOOK_HAND_Y; // la mano llega a la argolla
+    var _gy = c_gancho_centro_y(hook_target) + HOOK_HAND_Y; // la mano del jugador llega a la argolla
     var _hdist = point_distance(x, y, _gx, _gy);
     var _hdir = point_direction(x, y, _gx, _gy);
     var _hspd = min(HOOK_SPEED, _hdist);
     xSpeed = lengthdir_x(_hspd, _hdir);
     ySpeed = lengthdir_y(_hspd, _hdir);
-    // Cuadros: 0-1 lanza la cadena, 2-5 en vuelo (en bucle), 6-7 al llegar.
+    // Cuadros: lanzar, volar en bucle y llegar
     if (variable_struct_exists(sprites, "hook")) {
         var _hf;
         if (_hdist < HOOK_SPEED * 1.5) _hf = 7;
@@ -73,7 +114,7 @@ if (state == "hook") {
     c_fighter_move();
     var _stuck = hook_timer > 2 && point_distance(_px, _py, x, y) < 0.5;
     if (_hdist <= HOOK_SPEED || _stuck || hook_timer > 90) {
-        // Al llegar: pequeno impulso hacia arriba y adelante para subir al borde.
+        // Al llegar salta un poco para subir
         hook_target = noone;
         air_jumps = air_jumps_max;
         ySpeed = -jumpPower * 0.75;
@@ -86,11 +127,11 @@ if (state == "hook") {
     exit;
 }
 
-// Agarrado a la pared: se queda pegado deslizandose lento hasta que salte,
-// se agache (S), toque el suelo, se acabe la pared o pasen wall_grab_time segundos.
+// Agarrado a la pared: se desliza lento
+// Se suelta al saltar, agacharse o pasar el tiempo
 if (state == "wall") {
     var _fps_w = game_get_speed(gamespeed_fps);
-    // Desde la pared tambien se puede usar el gancho o crear el puente.
+    // Desde la pared tambien puede usar su habilidad
     if (input_enabled && read_key_pressed(key_ability) && c_fighter_habilidad() && state == "hook") exit;
     wall_timer++;
     right = wall_dir < 0; // mira hacia afuera de la pared
@@ -101,7 +142,7 @@ if (state == "wall") {
         image_index = anim_frame;
     }
     if (read_key_pressed(key_jump) || read_key_pressed(key_jump_alt)) {
-        // Salto al lado contrario.
+        // Rebota saltando hacia el lado contrario
         ySpeed = -jumpPower;
         xSpeed = -wall_dir * xSpeedMax * 1.3;
         right = wall_dir < 0;
@@ -109,8 +150,9 @@ if (state == "wall") {
         wall_last_dir = wall_dir;
         wall_regrab = 15;
         c_fighter_state("wall_jump");
+        c_sfx(snd_jump, 0.7);
     } else if (read_key_pressed(key_crouch) || read_key_pressed(key_crouch_alt) || wall_timer >= wall_grab_time * _fps_w) {
-        // Se suelta.
+        // Se suelta de la pared y cae
         wall_last_dir = wall_dir;
         wall_regrab = 30;
         c_fighter_state("fall");
@@ -124,13 +166,13 @@ if (state == "wall") {
     exit;
 }
 
-// Habilidad de nivel (E): gancho de Scorpion o puente de hielo de Sub-Zero.
+// Habilidad con Alt: gancho o puente de hielo
 if (input_enabled && read_key_pressed(key_ability)
 && (state == "stand" || state == "run" || state == "crouch" || state == "jump" || state == "fall" || state == "land" || state == "wall" || state == "wall_jump")) {
     if (c_fighter_habilidad() && state == "hook") exit;
 }
 
-var _salto_suelo = false; // salto desde el suelo en este frame (no gasta el doble salto)
+var _salto_suelo = false; // salto desde el suelo este frame, no doble
 wall_lock = max(0, wall_lock - 1);
 wall_regrab = max(0, wall_regrab - 1);
 var _locked = state == "punch" || state == "kick" || state == "ranged" || state == "slide" || state == "jump_start";
@@ -142,7 +184,7 @@ if (!_locked) {
         (read_key(key_left) || (key_left_alt >= 0 && read_key(key_left_alt))) : ai_move;
     var _crouch = input_enabled ? (read_key(key_crouch) || read_key(key_crouch_alt)) : ai_crouch;
     if (wall_lock > 0) {
-        // Tras un wall jump o el gancho se conserva el impulso unos frames.
+        // Tras rebotar o el gancho conserva el impulso
     } else if (_input != 0) {
         right = _input > 0;
         if (sign(xSpeed) != _input) xSpeed = 0;
@@ -151,16 +193,17 @@ if (!_locked) {
         xSpeed = 0;
     }
     if (ground) {
-        // Una pulsacion inicia cada ataque; mantener la tecla no lo repite.
+        // Cada ataque empieza al pulsar su boton
         if ((input_enabled && (read_key_pressed(key_jump) || read_key_pressed(key_jump_alt))) || ai_jump) {
-            // Salto inmediato, sin frenar: conserva la velocidad horizontal.
+            // Salto inmediato que conserva la velocidad horizontal
             ySpeed = -jumpPower;
             ground = false;
             air_jumps = air_jumps_max;
             _salto_suelo = true;
             c_fighter_state("jump");
+            c_sfx(snd_jump, 0.7);
         } else if ((input_enabled && (read_button_pressed(button_punch) || read_button(button_punch))) || ai_punch) {
-            // Mantener el boton repite el golpe.
+            // Mantener el boton repite el mismo golpe
             xSpeed = 0;
             c_fighter_state("punch");
         } else if ((input_enabled && (read_button_pressed(button_kick) || read_button(button_kick))) || ai_kick) {
@@ -174,7 +217,7 @@ if (!_locked) {
             c_fighter_state("slide");
             slide_cooldown = 60;
         } else if (_crouch) {
-            // Agachado no se desplaza, pero puede girarse.
+            // Agachado no se desplaza pero puede girarse
             xSpeed = 0;
             if (state != "land" || anim_done) c_fighter_state("crouch");
         } else if (state != "land") {
@@ -190,6 +233,7 @@ switch (state) {
             ySpeed = -jumpPower;
             ground = false;
             c_fighter_state("jump");
+            c_sfx(snd_jump, 0.7);
         }
     break;
     case "punch":
@@ -201,7 +245,7 @@ switch (state) {
         if (anim_done) c_fighter_state("stand");
     break;
     case "kick":
-        // Mas lenta que el punetazo: el golpe sale con la pierna extendida.
+        // La patada es mas lenta que el golpe
         xSpeed = 0;
         if (!action_fired && anim_frame >= 4) {
             c_fighter_attack("kick");
@@ -217,7 +261,7 @@ switch (state) {
         }
         if (projectile_object == o_spear && action_fired) {
             if (instance_exists(active_projectile)) {
-                // El cuadro de lanzamiento muestra los brazos extendidos.
+                // Muestra los brazos extendidos mientras dura la cadena
                 anim_frame = 4;
                 image_index = 4;
                 anim_done = false;
@@ -229,7 +273,7 @@ switch (state) {
         }
     break;
     case "slide":
-        // La mascara baja solo mientras la patada esta extendida.
+        // La mascara baja solo durante la patada deslizante
         var _active_slide = anim_frame >= 2 && anim_frame < 6;
         mask_index = _active_slide ? s_fighter_mask_slide : s_fighter_mask;
         xSpeed = _active_slide ? (right ? 10 : -10) : 0;
@@ -247,7 +291,7 @@ switch (state) {
 if (state == "crouch") mask_index = s_fighter_mask_crouch;
 else if (state != "slide") mask_index = s_fighter_mask;
 
-// Agarrarse a una pared (solo el jugador): en el aire, tocandola y moviendose hacia ella.
+// Se agarra a una pared moviendose hacia ella
 if (input_enabled && !ground && (state == "jump" || state == "fall" || state == "wall_jump") && ySpeed > -3) {
     var _wall_r = place_meeting(x + 1, y, o_solid);
     var _wall_l = place_meeting(x - 1, y, o_solid);
@@ -260,6 +304,7 @@ if (input_enabled && !ground && (state == "jump" || state == "fall" || state == 
             wall_dir = _wd;
             wall_timer = 0;
             air_jumps = air_jumps_max;
+            dash_air_used = false;
             xSpeed = 0;
             ySpeed = 0;
             right = wall_dir < 0;
@@ -270,13 +315,14 @@ if (input_enabled && !ground && (state == "jump" || state == "fall" || state == 
     }
 }
 
-// Doble salto: una pulsacion de salto en el aire.
+// Doble salto: pulsar salto otra vez en el aire
 if (input_enabled && !ground && !_salto_suelo && (state == "jump" || state == "fall" || state == "wall_jump") && air_jumps > 0
 && (read_key_pressed(key_jump) || read_key_pressed(key_jump_alt))) {
     air_jumps--;
     ySpeed = -jumpPower * double_jump_power;
+    c_sfx(snd_jump, 0.7);
     if (state == "jump") {
-        // Reinicia la animacion de salto.
+        // Reinicia la animacion de salto desde el principio
         anim_frame = 0;
         anim_done = false;
     } else {
@@ -295,7 +341,7 @@ if (!_was_ground && ground && (state == "fall" || state == "jump" || state == "w
     c_fighter_state(ySpeed < 0 ? "jump" : "fall");
 }
 
-// Si cae mas de fall_return_time segundos, vuelve al ultimo suelo firme (o_solid) que piso.
+// Si cae demasiado vuelve al ultimo suelo firme
 if (input_enabled && !dead) {
     if (ground && place_meeting(x, y + 1, o_solid)) {
         safe_x = x;
@@ -304,18 +350,29 @@ if (input_enabled && !dead) {
     if (!ground && ySpeed > 0 && (state == "fall" || state == "jump" || state == "wall_jump")) fall_timer++;
     else fall_timer = 0;
     if (fall_timer >= fall_return_time * game_get_speed(gamespeed_fps)) {
-        x = safe_x;
-        y = safe_y;
+        if (room == Nivel2) {
+            // En el Nivel 2 vuelve al ultimo checkpoint
+            if (global.checkpoint_activo) { x = global.checkpoint_x; y = global.checkpoint_y; }
+            else { x = spawn_x; y = spawn_y; }
+            var _n = 0;
+            while (place_meeting(x, y, o_solid) && _n < 256) { y--; _n++; }
+        } else {
+            x = safe_x;
+            y = safe_y;
+        }
         xSpeed = 0;
         ySpeed = 0;
         fall_timer = 0;
         ground = true;
-        invi = 30; // parpadea un momento al volver
+        invi = 0;
         c_fighter_state("stand");
+        // Cada caida quita vida y puede matar
+        c_fighter_hit(id, caida_dano, noone, "caida", 0);
+        c_sfx(snd_respawn, 0.8);
     }
 }
 
-// Se pueden atravesar en movimiento, pero parados nunca quedan uno encima del otro.
+// Parados nunca quedan uno encima del otro
 if (xSpeed == 0) {
     var _other = instance_place(x, y, o_fighter);
     if (_other != noone) {

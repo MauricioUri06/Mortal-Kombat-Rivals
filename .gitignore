@@ -65,6 +65,3 @@ Build
 .build/
 .build-initial.log
 **/__pycache__/
-
-# copia de seguridad local
-_backup_antes_de_claude/

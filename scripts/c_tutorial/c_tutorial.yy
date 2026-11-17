@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"c_tutorial",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"c_tutorial",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

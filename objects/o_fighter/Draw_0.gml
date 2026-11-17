@@ -1,6 +1,6 @@
-// Cadena del gancho: de la mano de Scorpion a la argolla.
+// Cadena del gancho desde la mano hasta la argolla
 if (state == "hook" && instance_exists(hook_target)) {
-    var _ax = x + (right ? 1 : -1) * 52; // mano extendida de s_animacion_gancho
+    var _ax = x + (right ? 1 : -1) * 52; // posicion de la mano extendida del sprite
     var _ay = y - HOOK_HAND_Y;
     var _gx = c_gancho_centro_x(hook_target);
     var _gy = c_gancho_centro_y(hook_target);
@@ -10,7 +10,7 @@ if (state == "hook" && instance_exists(hook_target)) {
     draw_line(_ax, _ay - 1, _gx, _gy - 1);
     draw_set_colour(c_white);
 }
-// Dibujar no cambia la fisica ni el estado de las animaciones.
+// Dibujar no cambia la fisica ni las animaciones
 var _colour = frozen_timer > 0 ? make_colour_rgb(115, 222, 255) : c_white;
 var _alpha = (invi > 0 && frozen_timer == 0 && !dead && (invi div 3) mod 2 == 0) ? 0.5 : 1;
 draw_sprite_ext(anim_sprite, floor(anim_frame), x, y,
@@ -23,15 +23,9 @@ if (frozen_timer > 0) {
     draw_set_alpha(1);
 }
 
-if (global.debug_hitboxes) {
-    draw_set_colour(c_lime);
-    draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, true);
-    draw_set_colour(c_white);
-    draw_text(x - 30, y - 112, state);
-}
 draw_set_colour(c_white);
 
-// Aviso "ALT" sobre la cabeza cuando Sub-Zero tiene un puente a su alcance.
+// Aviso ALT cuando Sub-Zero puede crear un puente
 if (input_enabled && !dead && projectile_object == o_iceball
 && (state == "stand" || state == "run" || state == "crouch" || state == "jump" || state == "fall" || state == "land" || state == "wall" || state == "wall_jump")) {
     if (c_puente_buscar() != noone) {

@@ -1,4 +1,4 @@
-// Base compartida: los hijos asignan sprites, controles y proyectil.
+// Base compartida: los hijos asignan sprites y controles
 hpMax = 100;
 hp = hpMax;
 dmg = 10;
@@ -46,20 +46,20 @@ key_crouch_alt = vk_down;
 button_punch = mb_left;
 button_kick = mb_right;
 key_ranged = ord("Q");
-key_ability = vk_alt; // gancho (Scorpion) o puente de hielo (Sub-Zero)
+key_ability = vk_alt; // gancho de Scorpion o puente de Sub-Zero
 input_enabled = true;
 key_left_alt = vk_left;
 key_right_alt = vk_right;
 key_jump_alt = vk_space;
-// Botones virtuales: la IA del jefe los pulsa en lugar del teclado.
+// Botones virtuales que pulsa la IA del jefe
 ai_move = 0;
 ai_jump = false;
 ai_punch = false;
 ai_ranged = false;
 ai_slide = false;
 ai_kick = false;
-ai_crouch = false; // se mantiene pulsado, no es de un solo frame
-// Lectura de entradas reemplazable para pruebas sin foco de ventana.
+ai_crouch = false; // se mantiene pulsado, no dura un frame
+// Funciones de lectura de teclado y mouse
 read_key = function(_key) { return keyboard_check(_key); };
 read_key_pressed = function(_key) { return keyboard_check_pressed(_key); };
 read_key_released = function(_key) { return keyboard_check_released(_key); };
@@ -68,24 +68,34 @@ read_button = function(_button) { return mouse_check_button(_button); };
 spawn_x = x;
 spawn_y = y;
 spawn_right = true;
-// Gancho y wall jump.
+// Variables del gancho y del wall jump
 hook_target = noone;
 hook_timer = 0;
-wall_lock = 0;          // frames sin control horizontal tras un wall jump
-wall_slide_speed = 2;   // velocidad maxima al deslizarse por una pared
-wall_grab_time = 1;     // segundos que aguanta agarrado antes de soltarse
-wall_dir = 0;           // 1 = pared a la derecha, -1 = a la izquierda
+wall_lock = 0; // frames sin control horizontal tras rebotar
+wall_slide_speed = 2; // velocidad maxima al deslizarse por la pared
+wall_grab_time = 1; // segundos agarrado antes de soltarse solo
+wall_dir = 0; // uno pared a la derecha, menos uno izquierda
 wall_timer = 0;
-wall_last_dir = 0;      // ultima pared de la que se solto o salto
-wall_regrab = 0;        // frames en los que no puede volver a agarrar esa misma pared
-// Doble salto.
-air_jumps_max = 1;      // saltos extra en el aire (1 = doble salto)
+wall_last_dir = 0; // ultima pared de la que se solto
+wall_regrab = 0; // frames sin poder agarrar esa misma pared
+// Variables del doble salto del jugador
+air_jumps_max = 1; // saltos extra en el aire, uno es doble
 air_jumps = air_jumps_max;
-double_jump_power = 0.9; // fuerza del salto en el aire respecto al normal
-// Velocidad de los ataques (1 = normal). Los jugadores la suben.
+double_jump_power = 0.9; // fuerza del segundo salto respecto al normal
+// Velocidad de los ataques, uno es normal
 attack_speed = 1;
-// Volver al ultimo suelo firme si cae demasiado tiempo (solo el jugador).
-fall_return_time = 0.8;  // segundos cayendo antes de volver
+// Volver al suelo firme si cae mucho tiempo
+fall_return_time = 0.8; // segundos cayendo antes de volver al suelo
+caida_dano = 10; // vida que se pierde en cada caida
 fall_timer = 0;
 safe_x = x;
 safe_y = y;
+// Variables del dash, se desbloquea con power-up
+key_dash = ord("E");
+dash_speed = 16; // velocidad horizontal durante el dash
+dash_frames = 13; // duracion del dash medida en frames
+dash_cooldown = 35; // espera entre dos dashes medida en frames
+dash_timer = 0;
+dash_cd = 0;
+dash_dir = 1;
+dash_air_used = false; // solo se permite un dash por salto

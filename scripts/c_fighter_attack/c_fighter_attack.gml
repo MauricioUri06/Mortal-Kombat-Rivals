@@ -1,4 +1,4 @@
-/// Crea un golpe delante del luchador; cada golpe puede impactar una sola vez.
+/// Crea un golpe que impacta una vez por objetivo
 function c_fighter_attack(_kind) {
     var _dir = right ? 1 : -1;
     var _hit = instance_create_layer(x, y, "att", o_hitbox);
@@ -9,16 +9,16 @@ function c_fighter_attack(_kind) {
     switch (_kind) {
         case "slide":
             _hit.dmg = 16; _hit.life = 12;
-            _hit.offset_x = 42; _hit.offset_y = -19; _hit.half_width = 36; _hit.half_height = 23; // +45 % sobre el original
+            _hit.offset_x = 42; _hit.offset_y = -19; _hit.half_width = 36; _hit.half_height = 23; // zona de golpe del deslizamiento, mas grande
         break;
         case "kick":
-            // Mas dano y alcance que el punetazo, pero mas lenta; patada alta: pasa por encima del agachado.
+            // Patada: mas dano y alcance, pero mas lenta
             _hit.dmg = 14; _hit.life = 6;
-            _hit.offset_x = 50; _hit.offset_y = -64; _hit.half_width = 29; _hit.half_height = 14; // +45 % sobre el original
+            _hit.offset_x = 50; _hit.offset_y = -64; _hit.half_width = 29; _hit.half_height = 14; // zona de golpe alta de la patada, mas grande
         break;
         default:
             _hit.dmg = 10; _hit.life = 5;
-            _hit.offset_x = 40; _hit.offset_y = -53; _hit.half_width = 30; _hit.half_height = 22; // +45 % sobre el original
+            _hit.offset_x = 40; _hit.offset_y = -53; _hit.half_width = 30; _hit.half_height = 22; // zona de golpe del punetazo, mas grande
         break;
     }
 }
@@ -34,4 +34,5 @@ function c_fighter_projectile() {
     _shot.image_yscale = _shot.scale;
     active_projectile = _shot;
     special_cooldown = 72;
+    if (projectile_object == o_spear) c_sfx_cadena(); else c_sfx(snd_iceball, 0.8);
 }

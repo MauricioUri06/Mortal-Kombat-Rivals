@@ -1,26 +1,32 @@
-// Muerte, como o_enemy_body ---------
-
+// Al morir se queda quieto y se desvanece
 if (hp <= 0) {
-    instance_destroy();
+    if (!muriendo) {
+        muriendo = true;
+        c_sfx(snd_enemy_die);
+        hspeed = 0;
+    }
+    fade -= 1 / (0.6 * game_get_speed(gamespeed_fps));
+    if (fade <= 0) instance_destroy();
     exit;
 }
 
-// Colocado a mano en la room: busca al jugador cuando aparece.
+// Colocado en la room: busca al jugador solo
 if (!instance_exists(target) && instance_exists(o_control)) target = o_control.player;
 hit_flash = max(0, hit_flash - 1);
-anim += 1 / 6; // 10 cuadros por segundo
+anim += 1 / 6; // anima a diez cuadros por segundo
 
-// Salto al terminar la preparacion (lo que hace la alarma de o_jumper) --
+// Salta al terminar la preparacion
 
 if (state == "prep" && anim >= 2) {
     state = "air";
     anim = 0;
+    c_sfx(snd_baraka_jump, 0.8);
     ground = 0;
     ySpeed -= jumpPower;
     xSpeed = xSpeedMax * sign(image_xscale);
 }
 
-// Movimiento, igual que o_jumper -----
+// Movimiento horizontal y vertical con colisiones
 
 if (xSpeed != 0) {
     if (xSpeed > 0) {
@@ -48,10 +54,10 @@ if (ySpeed != 0) {
 
 x = clamp(x, 24, room_width - 24);
 
-// Checks ------------------------------
+// Comprueba si esta en el suelo
 
 if (collision_rectangle(x - 12, y, x + 12, y + 1, o_terrain, 0, 1) and collision_rectangle(x - 12, y - 10, x + 12, y, o_terrain, 0, 1) == noone) {
-    // ground --------------
+    // En el suelo se detiene y aterriza
     ground = 1;
     ySpeed = 0;
     xSpeed = 0;
@@ -60,7 +66,7 @@ if (collision_rectangle(x - 12, y, x + 12, y + 1, o_terrain, 0, 1) and collision
         anim = 0;
     }
 } else {
-    // air ------------------
+    // En el aire aplica la gravedad
     ground = 0;
     ySpeed += grav;
     if (ySpeed > fallMax) ySpeed = fallMax;
@@ -77,7 +83,7 @@ if (state == "land" && anim >= 2) {
     anim = 0;
 }
 
-// Dano por contacto (como la colision del jugador con o_enemy), solo durante el salto --
+// Solo dana al jugador durante el salto
 
 if (state == "air" && instance_exists(target)) {
     if (place_meeting(x, y, target)) c_fighter_hit(target, dmg, id, "baraka", sign(target.x - x));

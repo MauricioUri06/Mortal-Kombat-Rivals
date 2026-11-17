@@ -1,11 +1,13 @@
-/// @description Jump
-// Como o_jumper, pero antes de saltar se agacha un momento (estado "prep").
+/// @description Baraka se prepara para saltar
+// Antes de saltar se agacha un momento
+
+if (hp <= 0) exit; // muerto: se esta desvaneciendo, no hace nada
 
 if (state != "idle" || !instance_exists(target)) {
     alarm[0] = 10;
     exit;
 }
-// Fuera de rango: no salta (vuelve a revisar en un momento).
+// Fuera de rango no salta, revisa luego
 if (target.dead || abs(target.x - x) > xrange || abs(target.y - y) > yrange) {
     alarm[0] = 10;
     exit;

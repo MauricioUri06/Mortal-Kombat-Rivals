@@ -1,0 +1,18 @@
+var _a = 1;
+if (timer < 15) _a = timer / 15;
+if (timer > duracion - 30) _a = (duracion - timer) / 30;
+var _cx = display_get_gui_width() / 2;
+var _cy = 200;
+draw_set_alpha(_a * 0.6);
+draw_set_colour(c_black);
+draw_rectangle(_cx - 280, _cy - 40, _cx + 280, _cy + 44, false);
+draw_set_alpha(_a);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+draw_set_colour(make_colour_rgb(255, 214, 110));
+draw_text_transformed(_cx, _cy - 10, texto, 2, 2, 0);
+draw_set_colour(c_white);
+draw_text_transformed(_cx, _cy + 24, subtexto, 1.2, 1.2, 0);
+draw_set_alpha(1);
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);

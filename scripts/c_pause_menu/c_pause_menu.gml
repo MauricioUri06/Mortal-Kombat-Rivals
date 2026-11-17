@@ -28,9 +28,11 @@ function c_match_menu_find_hover() {
 function c_match_menu_input() {
     if (match_menu_action != MatchMenuAction.none) return;
     if (keyboard_check_pressed(vk_escape)) {
+        c_sfx(snd_menu_select, 0.8, 0);
         match_menu_action = match_menu.escape_action;
         return;
     }
+    var _choice_before = match_menu_choice;
 
     var _hover = c_match_menu_find_hover();
     var _click = mouse_check_button_pressed(mb_left);
@@ -47,6 +49,8 @@ function c_match_menu_input() {
     }
     if (_click && _hover >= 0) match_menu_action = _options[_hover].action;
     else if (keyboard_check_pressed(vk_enter)) match_menu_action = _options[match_menu_choice].action;
+    if (match_menu_action != MatchMenuAction.none) c_sfx(snd_menu_select, 0.8, 0);
+    else if (match_menu_choice != _choice_before) c_sfx(snd_menu_move, 0.7, 0);
 }
 
 function c_match_menu_free_frame() {
@@ -56,7 +60,7 @@ function c_match_menu_free_frame() {
 
 function c_match_menu_draw() {
     if (!match_menu_frozen) {
-        // Captura la arena después de los eventos Draw y antes de ocultar las instancias.
+        // Captura la pantalla antes de ocultar las instancias
         if (surface_exists(application_surface)) {
             match_menu_frame = surface_create(surface_get_width(application_surface), surface_get_height(application_surface));
             if (surface_exists(match_menu_frame)) surface_copy(match_menu_frame, 0, 0, application_surface);

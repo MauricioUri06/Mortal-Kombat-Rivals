@@ -1,4 +1,4 @@
-/// Movimiento por pasos pequenos: no atraviesa paredes al deslizarse.
+/// Movimiento por pasos pequenos sin atravesar paredes
 function c_fighter_move() {
     var _remaining = abs(xSpeed);
     var _sign = sign(xSpeed);
@@ -24,7 +24,9 @@ function c_fighter_move() {
         y += _amount_y;
         _remaining -= abs(_amount_y);
     }
-    ground = place_meeting(x, y + 1, o_solid) || c_puente_bajo_pies(1);
+    // Nubes y puente solo sostienen si no sube
+    ground = place_meeting(x, y + 1, o_solid) || (ySpeed >= 0 && c_puente_bajo_pies(1));
+    if (ground && !place_meeting(x, y + 1, o_solid) && ySpeed >= 0) c_plataforma_ajustar();
     if (ground && ySpeed > 0) ySpeed = 0;
     if (y > room_height + 200) c_fighter_hit(id, hpMax, noone, "fall", 0);
 }

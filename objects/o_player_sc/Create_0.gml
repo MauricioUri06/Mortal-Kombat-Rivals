@@ -1,4 +1,4 @@
-// Scorpion jugable: hereda animaciones, combate y lanza de o_scorpion.
+// Scorpion jugable: hereda todo de o_scorpion
 event_inherited();
 player_number = 1;
 right = true;
@@ -13,8 +13,8 @@ button_kick = mb_right;
 key_ranged = ord("Q");
 key_slide = vk_shift;
 key_crouch = ord("S");
-// El jugador es un 20 % mas rapido que el jefe.
+// El jugador es mas rapido que el jefe
 xSpeedMax *= 1.2;
 xAccel *= 1.2;
-// Ataques un 20 % mas rapidos.
+// Ataques un veinte por ciento mas rapidos
 attack_speed = 1.2;

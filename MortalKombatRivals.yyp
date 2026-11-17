@@ -16,6 +16,7 @@
     {"$GMFolder":"","%Name":"level","folderPath":"folders/Objects/level.yy","name":"level","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Scripts","folderPath":"folders/Scripts.yy","name":"Scripts","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Shaders","folderPath":"folders/Shaders.yy","name":"Shaders","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Sprites","folderPath":"folders/Sprites.yy","name":"Sprites","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"characters","folderPath":"folders/Sprites/characters.yy","name":"characters","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"baraka","folderPath":"folders/Sprites/characters/baraka.yy","name":"baraka","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -42,10 +43,14 @@
     {"id":{"name":"o_checkpoint","path":"objects/o_checkpoint/o_checkpoint.yy",},},
     {"id":{"name":"o_control","path":"objects/o_control/o_control.yy",},},
     {"id":{"name":"o_enemy","path":"objects/o_enemy/o_enemy.yy",},},
+<<<<<<< HEAD
     {"id":{"name":"o_fade","path":"objects/o_fade/o_fade.yy",},},
     {"id":{"name":"o_fighter","path":"objects/o_fighter/o_fighter.yy",},},
     {"id":{"name":"o_fondo","path":"objects/o_fondo/o_fondo.yy",},},
     {"id":{"name":"o_gancho","path":"objects/o_gancho/o_gancho.yy",},},
+=======
+    {"id":{"name":"o_fighter","path":"objects/o_fighter/o_fighter.yy",},},
+>>>>>>> 77b046383f115992c94541c1567bd5accbf0d9f0
     {"id":{"name":"o_goro","path":"objects/o_goro/o_goro.yy",},},
     {"id":{"name":"o_hitbox","path":"objects/o_hitbox/o_hitbox.yy",},},
     {"id":{"name":"o_iceball","path":"objects/o_iceball/o_iceball.yy",},},
@@ -72,6 +77,7 @@
     {"id":{"name":"c_fighter_move","path":"scripts/c_fighter_move/c_fighter_move.yy",},},
     {"id":{"name":"c_fighter_state","path":"scripts/c_fighter_state/c_fighter_state.yy",},},
     {"id":{"name":"c_flip","path":"scripts/c_flip/c_flip.yy",},},
+<<<<<<< HEAD
     {"id":{"name":"c_fondo","path":"scripts/c_fondo/c_fondo.yy",},},
     {"id":{"name":"c_habilidades","path":"scripts/c_habilidades/c_habilidades.yy",},},
     {"id":{"name":"c_player_select","path":"scripts/c_player_select/c_player_select.yy",},},
@@ -97,6 +103,23 @@
     {"id":{"name":"s_next_down","path":"sprites/s_next_down/s_next_down.yy",},},
     {"id":{"name":"s_next","path":"sprites/s_next/s_next.yy",},},
     {"id":{"name":"s_puente_hielo","path":"sprites/s_puente_hielo/s_puente_hielo.yy",},},
+=======
+    {"id":{"name":"c_pause_menu","path":"scripts/c_pause_menu/c_pause_menu.yy",},},
+    {"id":{"name":"c_player_select","path":"scripts/c_player_select/c_player_select.yy",},},
+    {"id":{"name":"sh_health_frame_ice","path":"shaders/sh_health_frame_ice/sh_health_frame_ice.yy",},},
+    {"id":{"name":"s_baraka_idle","path":"sprites/s_baraka_idle/s_baraka_idle.yy",},},
+    {"id":{"name":"s_baraka_jump","path":"sprites/s_baraka_jump/s_baraka_jump.yy",},},
+    {"id":{"name":"s_fighter_mask_crouch","path":"sprites/s_fighter_mask_crouch/s_fighter_mask_crouch.yy",},},
+    {"id":{"name":"s_fighter_mask_slide","path":"sprites/s_fighter_mask_slide/s_fighter_mask_slide.yy",},},
+    {"id":{"name":"s_fighter_mask","path":"sprites/s_fighter_mask/s_fighter_mask.yy",},},
+    {"id":{"name":"s_goro_dazed","path":"sprites/s_goro_dazed/s_goro_dazed.yy",},},
+    {"id":{"name":"s_goro_tackle","path":"sprites/s_goro_tackle/s_goro_tackle.yy",},},
+    {"id":{"name":"s_goro_walk","path":"sprites/s_goro_walk/s_goro_walk.yy",},},
+    {"id":{"name":"s_health_frame","path":"sprites/s_health_frame/s_health_frame.yy",},},
+    {"id":{"name":"s_menu_background","path":"sprites/s_menu_background/s_menu_background.yy",},},
+    {"id":{"name":"s_menu_logo","path":"sprites/s_menu_logo/s_menu_logo.yy",},},
+    {"id":{"name":"s_pause_panel","path":"sprites/s_pause_panel/s_pause_panel.yy",},},
+>>>>>>> 77b046383f115992c94541c1567bd5accbf0d9f0
     {"id":{"name":"s_scorpion_crouch","path":"sprites/s_scorpion_crouch/s_scorpion_crouch.yy",},},
     {"id":{"name":"s_scorpion_death","path":"sprites/s_scorpion_death/s_scorpion_death.yy",},},
     {"id":{"name":"s_scorpion_fall","path":"sprites/s_scorpion_fall/s_scorpion_fall.yy",},},
@@ -126,6 +149,7 @@
     {"id":{"name":"s_subzero_run","path":"sprites/s_subzero_run/s_subzero_run.yy",},},
     {"id":{"name":"s_subzero_slide","path":"sprites/s_subzero_slide/s_subzero_slide.yy",},},
     {"id":{"name":"s_subzero_stand","path":"sprites/s_subzero_stand/s_subzero_stand.yy",},},
+<<<<<<< HEAD
     {"id":{"name":"s_tileset_1","path":"sprites/s_tileset_1/s_tileset_1.yy",},},
     {"id":{"name":"s_tileset_2","path":"sprites/s_tileset_2/s_tileset_2.yy",},},
     {"id":{"name":"s_tileset_3","path":"sprites/s_tileset_3/s_tileset_3.yy",},},
@@ -133,6 +157,8 @@
     {"id":{"name":"TileSet1","path":"tilesets/TileSet1/TileSet1.yy",},},
     {"id":{"name":"TileSet2","path":"tilesets/TileSet2/TileSet2.yy",},},
     {"id":{"name":"TileSet3","path":"tilesets/TileSet3/TileSet3.yy",},},
+=======
+>>>>>>> 77b046383f115992c94541c1567bd5accbf0d9f0
   ],
   "resourceType":"GMProject",
   "resourceVersion":"2.0",

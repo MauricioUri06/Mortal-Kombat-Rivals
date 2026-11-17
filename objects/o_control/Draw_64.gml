@@ -1,37 +1,52 @@
 draw_set_alpha(1);
 draw_set_halign(fa_center);
-if (selecting) {
-    draw_set_colour(make_colour_rgb(10, 15, 24));
-    draw_rectangle(0, 0, 1280, 720, false);
-    draw_set_colour(c_white);
-    draw_text_transformed(640, 64, "ELIGE TU LUCHADOR", 2, 2, 0);
-    draw_set_colour(make_colour_rgb(173, 190, 210));
-    draw_text(640, 112, "MORTAL KOMBAT RIVALS");
+if (main_menu_open) {
+    draw_sprite(s_menu_background, 0, 0, 0);
+    draw_sprite(s_menu_logo, 0, 640 - sprite_get_width(s_menu_logo) div 2, 159);
 
-    for (var _card = 0; _card < 2; _card++) {
-        var _x = 250 + _card * 420;
-        var _selected = selected_character == _card;
-        var _colour = _card == 0 ? make_colour_rgb(72, 201, 255) : make_colour_rgb(255, 197, 53);
-        draw_set_colour(_selected ? _colour : make_colour_rgb(48, 63, 81));
-        draw_rectangle(_x - 3, 177, _x + 363, 538, false);
-        draw_set_colour(make_colour_rgb(21, 30, 43));
-        draw_rectangle(_x, 180, _x + 360, 535, false);
-        var _sprite = _card == 0 ? s_subzero_stand : s_scorpion_stand;
-        var _frame = floor(current_time * 0.008) mod sprite_get_number(_sprite);
-        draw_sprite_ext(_sprite, _frame, _x + 180, 444, 1.25, 1.25, 0, c_white, 1);
-        draw_set_colour(_colour);
-        draw_text_transformed(_x + 180, 472, _card == 0 ? "SUB-ZERO" : "SCORPION", 1.5, 1.5, 0);
-        draw_set_colour(c_white);
-        draw_text(_x + 180, 510, _selected ? "SELECCIONADO" : (_card == 0 ? "[1]" : "[2]"));
-    }
+    draw_set_valign(fa_middle);
+    var _play = menu_play;
+    draw_set_colour(c_black);
+    draw_rectangle(_play.left - 2, _play.top + 5, _play.right + 2, _play.bottom - 1, false);
+    draw_rectangle(_play.left + 5, _play.top - 2, _play.right - 5, _play.bottom + 5, false);
+    var _rim = menu_play_hovered ? make_colour_rgb(245, 198, 119) : make_colour_rgb(189, 135, 74);
+    var _gold_dark = make_colour_rgb(105, 65, 37);
+    draw_set_colour(_gold_dark);
+    draw_rectangle(_play.left, _play.top + 6, _play.right, _play.bottom - 6, false);
+    draw_rectangle_colour(_play.left + 6, _play.top, _play.right - 6, _play.bottom,
+        _rim, _rim, _gold_dark, _gold_dark, false);
+    var _steel = menu_play_hovered ? make_colour_rgb(69, 54, 41) : make_colour_rgb(37, 35, 36);
+    var _iron = make_colour_rgb(13, 13, 17);
+    draw_rectangle_colour(_play.left + 3, _play.top + 3, _play.right - 3, _play.bottom - 3,
+        _steel, _steel, _iron, _iron, false);
+    draw_set_colour(_rim);
+    var _middle = (_play.top + _play.bottom) div 2;
+    draw_rectangle(_play.left + 13, _middle - 1, _play.left + 26, _middle + 1, false);
+    draw_rectangle(_play.right - 26, _middle - 1, _play.right - 13, _middle + 1, false);
+    draw_set_colour(make_colour_rgb(245, 236, 215));
+    draw_text_transformed(640, _middle, "JUGAR", 1.5, 1.5, 0);
+    draw_set_colour(make_colour_rgb(179, 191, 206));
+    draw_text(640, 515, "Enter para jugar");
 
+<<<<<<< HEAD
     draw_set_colour(c_white);
     draw_text(640, 578, "A / D o flechas: elegir   |   Enter o Espacio: jugar");
     draw_set_colour(make_colour_rgb(173, 190, 210));
     draw_text(640, 614, "Mover: A / D o flechas   |   Saltar: W o Espacio   |   Agacharse: S   |   Shift: deslizamiento");
     draw_text(640, 642, "Clic izq: golpe   |   Clic der: patada   |   Q: ataque a distancia   |   Alt: gancho / puente");
+=======
+>>>>>>> 77b046383f115992c94541c1567bd5accbf0d9f0
     draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
     draw_set_colour(c_white);
+    exit;
+}
+if (selecting) {
+    c_player_select_draw();
+    exit;
+}
+if (!is_undefined(match_menu)) {
+    c_match_menu_draw();
     exit;
 }
 draw_set_colour(make_colour_rgb(225, 233, 241));
@@ -40,23 +55,55 @@ draw_set_halign(fa_left);
 
 for (var _i = 0; _i < instance_number(o_fighter); _i++) {
     var _fighter = instance_find(o_fighter, _i);
-    var _left = _fighter.player_number == 1 ? 42 : 830;
-    draw_set_colour(_fighter.fighter_colour);
-    draw_text(_left, 42, _fighter.character_name);
-    draw_set_colour(make_colour_rgb(31, 45, 62));
-    draw_rectangle(_left, 68, _left + 408, 88, false);
-    draw_set_colour(_fighter.fighter_colour);
-    draw_rectangle(_left + 2, 70, _left + 2 + 404 * _fighter.hp / _fighter.hpMax, 86, false);
+    var _on_left = _fighter.player_number == 1;
+    var _left = _on_left ? 42 : 830;
+    var _right = _left + 408;
+    var _label_x = _on_left ? _left : _right;
+    var _colour = _fighter.fighter_colour;
+    var _health = clamp(_fighter.hp / max(1, _fighter.hpMax), 0, 1);
+    var _fill_width = round((_right - _left - 18) * _health);
+    var _fill_left = _on_left ? _left + 9 : _right - 9 - _fill_width;
+    var _fill_right = _fill_left + _fill_width;
+
+    draw_set_halign(_on_left ? fa_left : fa_right);
+    draw_set_colour(c_black);
+    draw_text_transformed(_label_x + 1, 43, _fighter.character_name, 1.35, 1.35, 0);
+    draw_set_colour(_colour);
+    draw_text_transformed(_label_x, 42, _fighter.character_name, 1.35, 1.35, 0);
+
+    // Fondo y vida quedan detrás del marco metálico del PNG.
+    draw_set_colour(make_colour_rgb(20, 16, 22));
+    draw_rectangle(_left + 9, 76, _right - 9, 91, false);
+
+    if (_fill_width > 0) {
+        var _fill_top = merge_colour(_colour, c_white, 0.28);
+        var _fill_bottom = merge_colour(_colour, c_black, 0.48);
+        draw_rectangle_colour(_fill_left, 76, _fill_right, 91, _fill_top, _fill_top, _fill_bottom, _fill_bottom, false);
+        draw_set_colour(_fill_top);
+        draw_rectangle(_fill_left, 76, _fill_right, 78, false);
+    }
+    var _object = _fighter.object_index;
+    var _ice_frame = (_object == o_subzero || object_is_ancestor(_object, o_subzero))
+        && shader_is_compiled(sh_health_frame_ice);
+    if (_ice_frame) shader_set(sh_health_frame_ice);
+    draw_sprite(s_health_frame, 0, _left - 6, 66);
+    if (_ice_frame) shader_reset();
+
     draw_set_colour(c_white);
-    draw_text(_left, 95, string(_fighter.hp) + " / " + string(_fighter.hpMax));
+    draw_text(_label_x, 106, string(_fighter.hp) + " / " + string(_fighter.hpMax));
     if (_fighter.input_enabled) {
-        draw_text(_left + 180, 95, _fighter.special_cooldown == 0 ? "ESPECIAL LISTO" : "RECARGANDO");
+        var _special_ready = _fighter.special_cooldown == 0;
+        draw_set_halign(_on_left ? fa_right : fa_left);
+        draw_set_colour(_special_ready ? _colour : make_colour_rgb(183, 199, 215));
+        draw_text(_on_left ? _right : _left, 106, _special_ready ? "ESPECIAL LISTO" : "RECARGANDO");
     }
 }
+draw_set_halign(fa_left);
 
 draw_set_colour(make_colour_rgb(183, 199, 215));
 draw_text(42, 637, "A/D mover  |  W/Espacio saltar  |  S agacharse  |  Shift deslizar  |  Clic izq golpe  |  Clic der patada  |  Q distancia  |  Alt habilidad");
 draw_set_colour(make_colour_rgb(118, 143, 166));
+<<<<<<< HEAD
 draw_text(42, 691, "R reiniciar  /  Esc elegir personaje  /  F1 ver colisiones");
 
 if (instance_exists(player)) {
@@ -77,4 +124,7 @@ if (instance_exists(boss)) {
         draw_set_halign(fa_left);
     }
 }
+=======
+draw_text(42, 691, "R reiniciar  /  Esc pausa  /  F1 ver colisiones");
+>>>>>>> 77b046383f115992c94541c1567bd5accbf0d9f0
 draw_set_colour(c_white);

@@ -29,22 +29,6 @@ if (selecting) {
         keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space));
     exit;
 }
-<<<<<<< HEAD
-if (keyboard_check_pressed(vk_escape)) { global.selected_character = -1; global.checkpoint_activo = false; room_restart(); exit; }
-if (keyboard_check_pressed(ord("R"))) { global.selected_character = selected_character; room_restart(); exit; }
-
-// Al morir, reaparece solo en el ultimo checkpoint (o en el inicio) tras 2 segundos.
-if (instance_exists(player) && player.dead) {
-    death_timer++;
-    if (death_timer >= 2 * game_get_speed(gamespeed_fps)) {
-        global.selected_character = selected_character;
-        room_restart();
-        exit;
-    }
-} else {
-    death_timer = 0;
-}
-=======
 if (keyboard_check_pressed(vk_escape)) {
     c_match_menu_open({
         title: "PAUSA",
@@ -61,5 +45,16 @@ if (keyboard_check_pressed(vk_escape)) {
     });
     exit;
 }
-if (keyboard_check_pressed(ord("R"))) c_player_start(selected_character);
->>>>>>> 77b046383f115992c94541c1567bd5accbf0d9f0
+if (keyboard_check_pressed(ord("R"))) { global.selected_character = selected_character; room_restart(); exit; }
+
+// Al morir, reaparece solo en el ultimo checkpoint (o en el inicio) tras 2 segundos.
+if (instance_exists(player) && player.dead) {
+    death_timer++;
+    if (death_timer >= 2 * game_get_speed(gamespeed_fps)) {
+        global.selected_character = selected_character;
+        room_restart();
+        exit;
+    }
+} else {
+    death_timer = 0;
+}

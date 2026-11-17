@@ -7,7 +7,7 @@ for (var _arg = 1; _arg <= parameter_count(); _arg++) {
 if (!global.test_mode) randomise();
 self_test_frame = 0;
 player_test_frame = -1;
-main_menu_open = !global.test_mode;
+main_menu_open = false; // se decide mas abajo
 menu_play = { left: 534, top: 438, right: 746, bottom: 494 };
 menu_play_hovered = false;
 match_menu = undefined;
@@ -21,6 +21,8 @@ selecting = true;
 // Tras R (reiniciar) se vuelve a empezar directo con el mismo personaje.
 if (!variable_global_exists("selected_character")) global.selected_character = -1;
 pending_start = global.test_mode ? -1 : global.selected_character;
+// El menu principal solo aparece en una partida nueva (no al reiniciar ni al cambiar de nivel).
+main_menu_open = !global.test_mode && pending_start < 0;
 if (!variable_global_exists("checkpoint_activo")) global.checkpoint_activo = false;
 if (!variable_global_exists("checkpoint_x")) { global.checkpoint_x = 0; global.checkpoint_y = 0; }
 if (!variable_global_exists("checkpoints_usados")) global.checkpoints_usados = [];

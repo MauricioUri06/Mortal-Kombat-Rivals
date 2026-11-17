@@ -7,14 +7,17 @@ match_menu_action = MatchMenuAction.none;
 
 switch (_action) {
     case MatchMenuAction.restart:
-        c_player_start(selected_character);
+        // Reinicia el nivel (enemigos en su lugar) en el ultimo checkpoint, con el mismo personaje.
+        global.selected_character = selected_character;
+        room_restart();
         break;
     case MatchMenuAction.select_fighter:
     case MatchMenuAction.main_menu:
-        c_player_clear();
-        selected_character = 0;
-        selecting = true;
-        main_menu_open = _action == MatchMenuAction.main_menu;
+        // Partida nueva: se olvidan personaje y checkpoints y se vuelve al primer nivel.
+        global.selected_character = -1;
+        global.checkpoint_activo = false;
+        global.checkpoints_usados = [];
         global.debug_hitboxes = false;
+        room_goto(room_first);
         break;
 }

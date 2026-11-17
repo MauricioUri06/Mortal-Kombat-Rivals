@@ -46,6 +46,7 @@ key_crouch_alt = vk_down;
 button_punch = mb_left;
 button_kick = mb_right;
 key_ranged = ord("Q");
+key_ability = vk_alt; // gancho (Scorpion) o puente de hielo (Sub-Zero)
 input_enabled = true;
 key_left_alt = vk_left;
 key_right_alt = vk_right;
@@ -63,6 +64,28 @@ read_key = function(_key) { return keyboard_check(_key); };
 read_key_pressed = function(_key) { return keyboard_check_pressed(_key); };
 read_key_released = function(_key) { return keyboard_check_released(_key); };
 read_button_pressed = function(_button) { return mouse_check_button_pressed(_button); };
+read_button = function(_button) { return mouse_check_button(_button); };
 spawn_x = x;
 spawn_y = y;
 spawn_right = true;
+// Gancho y wall jump.
+hook_target = noone;
+hook_timer = 0;
+wall_lock = 0;          // frames sin control horizontal tras un wall jump
+wall_slide_speed = 2;   // velocidad maxima al deslizarse por una pared
+wall_grab_time = 1;     // segundos que aguanta agarrado antes de soltarse
+wall_dir = 0;           // 1 = pared a la derecha, -1 = a la izquierda
+wall_timer = 0;
+wall_last_dir = 0;      // ultima pared de la que se solto o salto
+wall_regrab = 0;        // frames en los que no puede volver a agarrar esa misma pared
+// Doble salto.
+air_jumps_max = 1;      // saltos extra en el aire (1 = doble salto)
+air_jumps = air_jumps_max;
+double_jump_power = 0.9; // fuerza del salto en el aire respecto al normal
+// Velocidad de los ataques (1 = normal). Los jugadores la suben.
+attack_speed = 1;
+// Volver al ultimo suelo firme si cae demasiado tiempo (solo el jugador).
+fall_return_time = 0.8;  // segundos cayendo antes de volver
+fall_timer = 0;
+safe_x = x;
+safe_y = y;

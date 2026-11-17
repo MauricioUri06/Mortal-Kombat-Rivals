@@ -3,7 +3,9 @@ var _fps = game_get_speed(gamespeed_fps);
 invi = max(0, invi - 1);
 special_cooldown = max(0, special_cooldown - 1);
 slide_cooldown = max(0, slide_cooldown - 1);
-ground = place_meeting(x, y + 1, o_solid);
+ground = place_meeting(x, y + 1, o_solid) || c_puente_bajo_pies(1);
+if (ground) air_jumps = air_jumps_max;
+if (state == "wall" || state == "hook") fall_timer = 0; // agarrado o con el gancho no cuenta como caida // en el suelo se recupera el doble salto
 
 // La congelacion conserva el cuadro de recibir dano y no admite entradas.
 if (frozen_timer > 0 && !dead) {
@@ -44,6 +46,93 @@ if (state == "hurt") {
     exit;
 }
 
+// Gancho de Scorpion: se jala en linea recta hacia la argolla, sin gravedad.
+if (state == "hook") {
+    hook_timer++;
+    if (!instance_exists(hook_target)) { c_fighter_state("fall"); exit; }
+    var _gx = c_gancho_centro_x(hook_target);
+    var _gy = c_gancho_centro_y(hook_target) + HOOK_HAND_Y; // la mano llega a la argolla
+    var _hdist = point_distance(x, y, _gx, _gy);
+    var _hdir = point_direction(x, y, _gx, _gy);
+    var _hspd = min(HOOK_SPEED, _hdist);
+    xSpeed = lengthdir_x(_hspd, _hdir);
+    ySpeed = lengthdir_y(_hspd, _hdir);
+    // Cuadros: 0-1 lanza la cadena, 2-5 en vuelo (en bucle), 6-7 al llegar.
+    if (variable_struct_exists(sprites, "hook")) {
+        var _hf;
+        if (_hdist < HOOK_SPEED * 1.5) _hf = 7;
+        else if (_hdist < HOOK_SPEED * 3) _hf = 6;
+        else if (hook_timer < 4) _hf = 0;
+        else if (hook_timer < 8) _hf = 1;
+        else _hf = 2 + ((hook_timer div 4) mod 4);
+        anim_frame = min(_hf, sprite_get_number(anim_sprite) - 1);
+        image_index = floor(anim_frame);
+    }
+    var _px = x;
+    var _py = y;
+    c_fighter_move();
+    var _stuck = hook_timer > 2 && point_distance(_px, _py, x, y) < 0.5;
+    if (_hdist <= HOOK_SPEED || _stuck || hook_timer > 90) {
+        // Al llegar: pequeno impulso hacia arriba y adelante para subir al borde.
+        hook_target = noone;
+        air_jumps = air_jumps_max;
+        ySpeed = -jumpPower * 0.75;
+        xSpeed = (right ? 1 : -1) * 3;
+        wall_lock = 10;
+        ground = false;
+        c_fighter_state("jump");
+    }
+    image_xscale = right ? visual_scale : -visual_scale;
+    exit;
+}
+
+// Agarrado a la pared: se queda pegado deslizandose lento hasta que salte,
+// se agache (S), toque el suelo, se acabe la pared o pasen wall_grab_time segundos.
+if (state == "wall") {
+    var _fps_w = game_get_speed(gamespeed_fps);
+    // Desde la pared tambien se puede usar el gancho o crear el puente.
+    if (input_enabled && read_key_pressed(key_ability) && c_fighter_habilidad() && state == "hook") exit;
+    wall_timer++;
+    right = wall_dir < 0; // mira hacia afuera de la pared
+    xSpeed = 0;
+    ySpeed = min(ySpeed + grav * 0.25, wall_slide_speed);
+    if (variable_struct_exists(sprites, "wall")) {
+        anim_frame = (wall_timer div 10) mod 2;
+        image_index = anim_frame;
+    }
+    if (read_key_pressed(key_jump) || read_key_pressed(key_jump_alt)) {
+        // Salto al lado contrario.
+        ySpeed = -jumpPower;
+        xSpeed = -wall_dir * xSpeedMax * 1.3;
+        right = wall_dir < 0;
+        wall_lock = 12;
+        wall_last_dir = wall_dir;
+        wall_regrab = 15;
+        c_fighter_state("wall_jump");
+    } else if (read_key_pressed(key_crouch) || read_key_pressed(key_crouch_alt) || wall_timer >= wall_grab_time * _fps_w) {
+        // Se suelta.
+        wall_last_dir = wall_dir;
+        wall_regrab = 30;
+        c_fighter_state("fall");
+    }
+    c_fighter_move();
+    if (state == "wall") {
+        if (ground) c_fighter_state("land");
+        else if (!place_meeting(x + wall_dir, y, o_solid)) c_fighter_state("fall");
+    }
+    image_xscale = right ? visual_scale : -visual_scale;
+    exit;
+}
+
+// Habilidad de nivel (E): gancho de Scorpion o puente de hielo de Sub-Zero.
+if (input_enabled && read_key_pressed(key_ability)
+&& (state == "stand" || state == "run" || state == "crouch" || state == "jump" || state == "fall" || state == "land" || state == "wall" || state == "wall_jump")) {
+    if (c_fighter_habilidad() && state == "hook") exit;
+}
+
+var _salto_suelo = false; // salto desde el suelo en este frame (no gasta el doble salto)
+wall_lock = max(0, wall_lock - 1);
+wall_regrab = max(0, wall_regrab - 1);
 var _locked = state == "punch" || state == "kick" || state == "ranged" || state == "slide" || state == "jump_start";
 if (state == "land" && anim_done) c_fighter_state("stand");
 
@@ -52,7 +141,9 @@ if (!_locked) {
         (read_key(key_right) || (key_right_alt >= 0 && read_key(key_right_alt))) -
         (read_key(key_left) || (key_left_alt >= 0 && read_key(key_left_alt))) : ai_move;
     var _crouch = input_enabled ? (read_key(key_crouch) || read_key(key_crouch_alt)) : ai_crouch;
-    if (_input != 0) {
+    if (wall_lock > 0) {
+        // Tras un wall jump o el gancho se conserva el impulso unos frames.
+    } else if (_input != 0) {
         right = _input > 0;
         if (sign(xSpeed) != _input) xSpeed = 0;
         xSpeed = clamp(xSpeed + _input * xAccel, -xSpeedMax, xSpeedMax);
@@ -62,15 +153,20 @@ if (!_locked) {
     if (ground) {
         // Una pulsacion inicia cada ataque; mantener la tecla no lo repite.
         if ((input_enabled && (read_key_pressed(key_jump) || read_key_pressed(key_jump_alt))) || ai_jump) {
-            xSpeed = 0;
-            c_fighter_state("jump_start");
-        } else if ((input_enabled && read_button_pressed(button_punch)) || ai_punch) {
+            // Salto inmediato, sin frenar: conserva la velocidad horizontal.
+            ySpeed = -jumpPower;
+            ground = false;
+            air_jumps = air_jumps_max;
+            _salto_suelo = true;
+            c_fighter_state("jump");
+        } else if ((input_enabled && (read_button_pressed(button_punch) || read_button(button_punch))) || ai_punch) {
+            // Mantener el boton repite el golpe.
             xSpeed = 0;
             c_fighter_state("punch");
-        } else if ((input_enabled && read_button_pressed(button_kick)) || ai_kick) {
+        } else if ((input_enabled && (read_button_pressed(button_kick) || read_button(button_kick))) || ai_kick) {
             xSpeed = 0;
             c_fighter_state("kick");
-        } else if (((input_enabled && read_key_pressed(key_ranged)) || ai_ranged) && special_cooldown == 0) {
+        } else if (((input_enabled && (read_key_pressed(key_ranged) || read_key(key_ranged))) || ai_ranged) && special_cooldown == 0) {
             xSpeed = 0;
             c_fighter_state("ranged");
         } else if (((input_enabled && read_key_pressed(key_slide)) || ai_slide) && slide_cooldown == 0) {
@@ -151,14 +247,72 @@ switch (state) {
 if (state == "crouch") mask_index = s_fighter_mask_crouch;
 else if (state != "slide") mask_index = s_fighter_mask;
 
+// Agarrarse a una pared (solo el jugador): en el aire, tocandola y moviendose hacia ella.
+if (input_enabled && !ground && (state == "jump" || state == "fall" || state == "wall_jump") && ySpeed > -3) {
+    var _wall_r = place_meeting(x + 1, y, o_solid);
+    var _wall_l = place_meeting(x - 1, y, o_solid);
+    if (_wall_r || _wall_l) {
+        var _wd = _wall_r ? 1 : -1;
+        var _hold = (read_key(key_right) || (key_right_alt >= 0 && read_key(key_right_alt)))
+                  - (read_key(key_left) || (key_left_alt >= 0 && read_key(key_left_alt)));
+        var _toward = _hold == _wd || sign(xSpeed) == _wd;
+        if (_toward && !(_wd == wall_last_dir && wall_regrab > 0)) {
+            wall_dir = _wd;
+            wall_timer = 0;
+            air_jumps = air_jumps_max;
+            xSpeed = 0;
+            ySpeed = 0;
+            right = wall_dir < 0;
+            c_fighter_state("wall");
+            image_xscale = right ? visual_scale : -visual_scale;
+            exit;
+        }
+    }
+}
+
+// Doble salto: una pulsacion de salto en el aire.
+if (input_enabled && !ground && !_salto_suelo && (state == "jump" || state == "fall" || state == "wall_jump") && air_jumps > 0
+&& (read_key_pressed(key_jump) || read_key_pressed(key_jump_alt))) {
+    air_jumps--;
+    ySpeed = -jumpPower * double_jump_power;
+    if (state == "jump") {
+        // Reinicia la animacion de salto.
+        anim_frame = 0;
+        anim_done = false;
+    } else {
+        c_fighter_state("jump");
+    }
+}
+
 if (input_enabled && (read_key_released(key_jump) || read_key_released(key_jump_alt)) && ySpeed < -4) ySpeed = -4;
 var _was_ground = ground;
 ySpeed = min(fallMax, ySpeed + grav);
 c_fighter_move();
-if (!_was_ground && ground && (state == "fall" || state == "jump")) {
+if (!_was_ground && ground && (state == "fall" || state == "jump" || state == "wall_jump")) {
     c_fighter_state("land");
-} else if (!ground && state != "punch" && state != "kick" && state != "ranged" && state != "slide" && state != "jump_start") {
+} else if (!ground && state != "punch" && state != "kick" && state != "ranged" && state != "slide" && state != "jump_start"
+&& !(state == "wall_jump" && !anim_done)) {
     c_fighter_state(ySpeed < 0 ? "jump" : "fall");
+}
+
+// Si cae mas de fall_return_time segundos, vuelve al ultimo suelo firme (o_solid) que piso.
+if (input_enabled && !dead) {
+    if (ground && place_meeting(x, y + 1, o_solid)) {
+        safe_x = x;
+        safe_y = y;
+    }
+    if (!ground && ySpeed > 0 && (state == "fall" || state == "jump" || state == "wall_jump")) fall_timer++;
+    else fall_timer = 0;
+    if (fall_timer >= fall_return_time * game_get_speed(gamespeed_fps)) {
+        x = safe_x;
+        y = safe_y;
+        xSpeed = 0;
+        ySpeed = 0;
+        fall_timer = 0;
+        ground = true;
+        invi = 30; // parpadea un momento al volver
+        c_fighter_state("stand");
+    }
 }
 
 // Se pueden atravesar en movimiento, pero parados nunca quedan uno encima del otro.

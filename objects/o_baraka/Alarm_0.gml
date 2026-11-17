@@ -5,6 +5,11 @@ if (state != "idle" || !instance_exists(target)) {
     alarm[0] = 10;
     exit;
 }
+// Fuera de rango: no salta (vuelve a revisar en un momento).
+if (target.dead || abs(target.x - x) > xrange || abs(target.y - y) > yrange) {
+    alarm[0] = 10;
+    exit;
+}
 
 state = "prep";
 anim = 0;

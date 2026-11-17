@@ -8,6 +8,7 @@ sprites = {
     jump_start: s_subzero_jump_start, jump: s_subzero_jump,
     fall: s_subzero_fall, land: s_subzero_land,
     punch: s_subzero_punch, ranged: s_subzero_ranged,
-    slide: s_subzero_slide, kick: s_subzero_kick, crouch: s_subzero_crouch, hurt: s_subzero_hurt, death: s_subzero_death
+    slide: s_subzero_slide, kick: s_subzero_kick, crouch: s_subzero_crouch, hurt: s_subzero_hurt, death: s_subzero_death,
+    wall: s_animacion_wallJump_sz
 };
 c_fighter_state("stand");

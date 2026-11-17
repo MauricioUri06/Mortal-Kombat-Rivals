@@ -5,6 +5,8 @@ if (hp <= 0) {
     exit;
 }
 
+// Colocado a mano en la room: busca al jugador cuando aparece.
+if (!instance_exists(target) && instance_exists(o_control)) target = o_control.player;
 hit_flash = max(0, hit_flash - 1);
 anim += 1 / 6; // 10 cuadros por segundo
 

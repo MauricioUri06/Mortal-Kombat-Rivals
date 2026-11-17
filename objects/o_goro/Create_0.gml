@@ -13,7 +13,10 @@ walkSpeed = 1.5;
 tackleSpeed = 9;
 xCheck = 16;
 range_y = 40;   // misma linea horizontal que el jugador
-dazedTime = 2;  // segundos confundido despues de chocar
+dazedTime = 2;
+ySpeed = 0;
+grav = 0.5;
+fallMax = 13;  // segundos confundido despues de chocar
 
 // comportamiento ------------------
 
@@ -32,3 +35,9 @@ if (irandom(1)) {
 	hspeed = -walkSpeed;
 	image_xscale = -visual_scale;
 }
+
+// Rango de activacion: no se mueve mientras el jugador este fuera de este rango.
+// Se puede cambiar por instancia en el Creation Code (ej: xrange = 300;).
+xrange = 300;   // distancia horizontal maxima al jugador
+yrange = 250;   // distancia vertical maxima al jugador
+pausa_hspeed = 0; // velocidad guardada mientras esta en pausa

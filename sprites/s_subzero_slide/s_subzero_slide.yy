@@ -33,7 +33,7 @@
   "origin":9,
   "parent":{
     "name":"subzero",
-    "path":"folders/Sprites/subzero.yy",
+    "path":"folders/Sprites/characters/subzero.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

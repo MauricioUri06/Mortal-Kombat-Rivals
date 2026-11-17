@@ -17,14 +17,14 @@ function c_fighter_move() {
     _sign = sign(ySpeed);
     while (_remaining > 0.0001) {
         var _amount_y = min(1, _remaining) * _sign;
-        if (place_meeting(x, y + _amount_y, o_solid)) {
+        if (place_meeting(x, y + _amount_y, o_solid) || (_amount_y > 0 && c_puente_bajo_pies(_amount_y))) {
             ySpeed = 0;
             break;
         }
         y += _amount_y;
         _remaining -= abs(_amount_y);
     }
-    ground = place_meeting(x, y + 1, o_solid);
+    ground = place_meeting(x, y + 1, o_solid) || c_puente_bajo_pies(1);
     if (ground && ySpeed > 0) ySpeed = 0;
     if (y > room_height + 200) c_fighter_hit(id, hpMax, noone, "fall", 0);
 }

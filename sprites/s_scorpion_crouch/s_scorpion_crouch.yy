@@ -32,7 +32,7 @@
   "origin":9,
   "parent":{
     "name":"scorpion",
-    "path":"folders/Sprites/scorpion.yy",
+    "path":"folders/Sprites/characters/scorpion.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

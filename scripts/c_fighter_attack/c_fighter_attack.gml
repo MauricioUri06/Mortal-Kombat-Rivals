@@ -9,16 +9,16 @@ function c_fighter_attack(_kind) {
     switch (_kind) {
         case "slide":
             _hit.dmg = 16; _hit.life = 12;
-            _hit.offset_x = 38; _hit.offset_y = -17; _hit.half_width = 25; _hit.half_height = 16;
+            _hit.offset_x = 42; _hit.offset_y = -19; _hit.half_width = 36; _hit.half_height = 23; // +45 % sobre el original
         break;
         case "kick":
             // Mas dano y alcance que el punetazo, pero mas lenta; patada alta: pasa por encima del agachado.
             _hit.dmg = 14; _hit.life = 6;
-            _hit.offset_x = 46; _hit.offset_y = -64; _hit.half_width = 20; _hit.half_height = 9;
+            _hit.offset_x = 50; _hit.offset_y = -64; _hit.half_width = 29; _hit.half_height = 14; // +45 % sobre el original
         break;
         default:
             _hit.dmg = 10; _hit.life = 5;
-            _hit.offset_x = 36; _hit.offset_y = -53; _hit.half_width = 21; _hit.half_height = 15;
+            _hit.offset_x = 40; _hit.offset_y = -53; _hit.half_width = 30; _hit.half_height = 22; // +45 % sobre el original
         break;
     }
 }

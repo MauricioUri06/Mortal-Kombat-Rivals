@@ -33,3 +33,8 @@ image_xscale = visual_scale;
 image_yscale = visual_scale;
 image_speed = 0;
 mask_index = s_fighter_mask;
+
+// Rango de activacion: no se mueve mientras el jugador este fuera de este rango.
+// Se puede cambiar por instancia en el Creation Code (ej: xrange = 300;).
+xrange = 300;   // distancia horizontal maxima al jugador
+yrange = 250;   // distancia vertical maxima al jugador

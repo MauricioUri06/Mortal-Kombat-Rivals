@@ -8,6 +8,18 @@ if (!global.test_mode) randomise();
 self_test_frame = 0;
 player_test_frame = -1;
 selecting = true;
+// Tras R (reiniciar) se vuelve a empezar directo con el mismo personaje.
+if (!variable_global_exists("selected_character")) global.selected_character = -1;
+pending_start = global.test_mode ? -1 : global.selected_character;
+if (!variable_global_exists("checkpoint_activo")) global.checkpoint_activo = false;
+if (!variable_global_exists("checkpoint_x")) { global.checkpoint_x = 0; global.checkpoint_y = 0; }
+if (!variable_global_exists("checkpoints_usados")) global.checkpoints_usados = [];
+if (global.selected_character < 0) { // partida nueva
+    global.checkpoint_activo = false;
+    global.checkpoints_usados = [];
+}
+death_timer = 0;
+c_fondo_crear(); // fondo del nivel que sigue a la camara
 selected_character = 0;
 player = noone;
 boss = noone;

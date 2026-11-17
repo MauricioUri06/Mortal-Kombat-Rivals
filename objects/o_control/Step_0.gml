@@ -71,6 +71,18 @@ if (keyboard_check_pressed(vk_escape)) {
     exit;
 }
 
+// Atajo con Supr: pasa el nivel, o en el nivel del jefe lo derrota
+if (keyboard_check_pressed(vk_delete) && instance_exists(player) && !player.dead) {
+    if (instance_exists(boss)) {
+        if (!boss.dead) {
+            boss.invi = 0; // que el golpe entre aunque este parpadeando
+            c_fighter_hit(boss, boss.hp, player, "punch", boss.x > player.x ? 1 : -1);
+        }
+    } else {
+        c_transicion_iniciar(-1);
+    }
+}
+
 // Al morir, el nivel empieza desde el comienzo
 if (instance_exists(player) && player.dead && !instance_exists(boss)) { // en el duelo decide el fatality
     death_timer++;

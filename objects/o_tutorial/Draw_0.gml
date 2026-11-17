@@ -6,9 +6,9 @@ switch (tipo) {
     case "saltar":      _keys = ["ESPACIO"];                    _txt = "Saltar"; break;
     case "doble_salto": _keys = ["ESPACIO", "ESPACIO"];         _txt = "Doble salto"; break;
     case "pared":       _keys = ["ESPACIO"];                    _txt = "Salta contra la pared y vuelve a saltar"; break;
-    case "ataques":     _keys = ["CLIC IZQ", "CLIC DER", "Q", "SHIFT"];  _txt = ["Golpe", "Patada", "Distancia", "Deslizarse"]; break;
-    case "dash":        _keys = ["E"];                          _txt = "Dash"; break;
-    case "agachar":     _keys = ["S", "SHIFT"];                 _txt = ["Agacharse", "Deslizarse"]; break;
+    case "ataques":     _keys = ["CLIC IZQ", "CLIC DER", "Q", "E"];      _txt = ["Golpe", "Patada", "Distancia", "Deslizarse"]; break;
+    case "dash":        _keys = ["SHIFT"];                      _txt = "Dash"; break;
+    case "agachar":     _keys = ["S", "E"];                     _txt = ["Agacharse", "Deslizarse"]; break;
     case "habilidad":
         _keys = ["ALT"];
         _txt = "Sub-Zero: crear puente de hielo   /   Scorpion: lanzar gancho";

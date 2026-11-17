@@ -40,7 +40,7 @@ mask_index = s_fighter_mask;
 key_left = ord("A");
 key_right = ord("D");
 key_jump = ord("W");
-key_slide = vk_shift;
+key_slide = ord("E");
 key_crouch = ord("S");
 key_crouch_alt = vk_down;
 button_punch = mb_left;
@@ -91,7 +91,7 @@ fall_timer = 0;
 safe_x = x;
 safe_y = y;
 // Variables del dash, se desbloquea con power-up
-key_dash = ord("E");
+key_dash = vk_shift;
 dash_speed = 16; // velocidad horizontal durante el dash
 dash_frames = 13; // duracion del dash medida en frames
 dash_cooldown = 35; // espera entre dos dashes medida en frames

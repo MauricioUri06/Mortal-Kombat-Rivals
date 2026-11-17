@@ -11,7 +11,7 @@ key_jump = ord("W");
 button_punch = mb_left;
 button_kick = mb_right;
 key_ranged = ord("Q");
-key_slide = vk_shift;
+key_slide = ord("E");
 key_crouch = ord("S");
 // El jugador es mas rapido que el jefe
 xSpeedMax *= 1.2;

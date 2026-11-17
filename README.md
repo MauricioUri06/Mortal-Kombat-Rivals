@@ -13,9 +13,9 @@ Al iniciar aparece el logo de Gaira Games y luego el menú principal (**Jugar** 
 | Agacharse | S o ↓ |
 | Golpe / patada | Clic izquierdo / clic derecho (mantener repite) |
 | Ataque a distancia | Q |
-| Deslizamiento | Shift |
+| Deslizamiento | E |
 | Habilidad: gancho (Scorpion) o puente de hielo (Sub-Zero) | Alt |
-| Dash (se desbloquea con el power-up) | E |
+| Dash (se desbloquea con el power-up) | Shift |
 | Pausa | Esc |
 
 ## Mecánicas
